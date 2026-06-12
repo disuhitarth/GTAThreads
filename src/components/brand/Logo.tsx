@@ -26,20 +26,21 @@ function Daisy({ className }: { className?: string }) {
 export function Logo({ className, variant = "wordmark" }: LogoProps) {
   if (variant === "mono") {
     return (
-      <div className={cn("flex items-center gap-1.5 font-display text-2xl leading-none", className)}>
-        <span className="italic font-semibold">G</span>
-        <Daisy className="h-5 w-5 text-rose" />
-      </div>
+      <img
+        src="https://i.ibb.co/TDf1VqYB/GTA-LOGO.png"
+        alt="GTA Threads Logo"
+        className={cn("h-7 w-auto object-contain", className)}
+      />
     );
   }
   return (
-    <div className={cn("flex flex-col leading-none", className)}>
-      <span className="flex items-center gap-1.5 font-display text-xl tracking-tight sm:text-[26px]">
-        <span className="italic font-medium">GTA</span>
-        <Daisy className="h-4 w-4 text-rose animate-spin-slow" />
-        <span className="font-medium">Threads</span>
-      </span>
-      <span className="mt-1 hidden font-script text-base leading-none text-bloom sm:inline">
+    <div className={cn("flex flex-col items-start leading-none", className)}>
+      <img
+        src="https://i.ibb.co/TDf1VqYB/GTA-LOGO.png"
+        alt="GTA Threads Logo"
+        className="h-10 sm:h-12 w-auto object-contain"
+      />
+      <span className="mt-1 font-script text-xs sm:text-sm leading-none text-bloom block">
         stitched with love
       </span>
     </div>
