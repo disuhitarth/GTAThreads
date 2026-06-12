@@ -69,8 +69,10 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [occOpen, setOccOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -154,7 +156,7 @@ export function Header() {
             className="relative grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
           >
             <ShoppingBag className="h-5 w-5" strokeWidth={1.5} />
-            {totalItems > 0 && (
+            {mounted && totalItems > 0 && (
               <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-bloom px-1 text-[10px] font-medium text-accent-foreground">
                 {totalItems}
               </span>

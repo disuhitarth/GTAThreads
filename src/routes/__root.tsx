@@ -19,6 +19,7 @@ import { FlowerCursor } from "@/components/FlowerCursor";
 import { CareChat } from "@/components/CareChat";
 import { Toaster } from "@/components/ui/sonner";
 import { useCartSync } from "@/hooks/useCartSync";
+import { fetchCollections } from "@/lib/shopify";
 
 function NotFoundComponent() {
   return (
@@ -139,6 +140,13 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
     ],
   }),
+  loader: async ({ context }) => {
+    await context.queryClient.ensureQueryData({
+      queryKey: ["collections"],
+      queryFn: () => fetchCollections(50),
+      staleTime: 1000 * 60 * 5,
+    });
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
