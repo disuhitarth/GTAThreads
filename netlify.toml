@@ -1,0 +1,21 @@
+# Netlify configuration for the TanStack Start storefront.
+#
+# Setup:
+#   1. In Netlify → Site settings → Environment variables, add everything from
+#      .env.example (VITE_SHOPIFY_*, VITE_SITE_URL, LOVABLE_API_KEY or your
+#      chosen AI provider key, etc.).
+#   2. Install the Netlify adapter for TanStack Start in your local repo:
+#        bun add -d @netlify/vite-plugin-tanstack-start
+#      and add it to vite.config.ts per
+#      https://tanstack.com/start/latest/docs/framework/react/hosting#netlify
+#   3. Connect the repo to Netlify — build settings below are picked up.
+
+[build]
+  command = "bun run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# TanStack Start ships its own server entry; the Netlify adapter wires SPA
+# fallback + serverless functions automatically. No manual redirects needed.

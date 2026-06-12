@@ -1,0 +1,44 @@
+# GTA Threads
+
+> A small Toronto embroidery studio making hand-stitched gifts — custom sweatshirts, tees, totes, hoodies and baby pieces for every occasion. Headless Shopify storefront.
+
+GTA Threads embroiders apparel to order in the Greater Toronto Area. Products are organized by category (hoodies, tees, baby, accessories, headwear) and by occasion (Valentine's Day, Mother's Day, Father's Day, Christmas, birthdays, weddings, baby showers).
+
+## Pages
+
+- [Home](/): Overview, featured products, occasion shortcuts.
+- [Shop](/shop): Full product catalogue with category and occasion filters.
+- [About](/about): The studio, the founder, and how the embroidery happens.
+- [Lookbook](/lookbook): Visual editorial of recent stitched pieces.
+- [Gift Finder](/gift-finder): Guided quiz to suggest a gift by recipient and occasion.
+- [Custom Orders](/custom-orders): How to commission a one-off embroidered piece.
+- [Size Guide](/size-guide): Fit and measurement charts.
+- [Care](/care): How to wash and care for embroidered apparel.
+- [Shipping & Returns](/shipping-returns): Delivery times, regions, return policy.
+
+## Categories
+
+- [All Categories](/category): Browse every product category.
+- [Hoodies](/category/hoodies): Embroidered hoodies.
+- [Tees](/category/tees): Embroidered t-shirts.
+- [Baby & Kids](/category/kids-baby): Onesies, bibs, tiny tees.
+- [Accessories](/category/accessories): Totes, pouches, hats.
+
+## Occasions
+
+- [All Occasions](/occasions): Browse gifts by occasion.
+- [Valentine's Day](/occasions/valentines): Valentine's gifts.
+- [Mother's Day](/occasions/mothers-day): Mother's Day gifts.
+- [Father's Day](/occasions/fathers-day): Father's Day gifts.
+- [Christmas](/occasions/christmas): Holiday gifts.
+- [Birthdays](/occasions/birthdays): Birthday gifts.
+- [Wedding](/occasions/wedding): Wedding-party gifts.
+- [Baby Showers](/occasions/baby): Baby-shower gifts.
+
+## Journal
+
+- [Journal](/journal): Notes from the studio — gift guides, behind-the-stitch.
+
+## Optional
+
+- [Sitemap](/sitemap.xml): Machine-readable URL list, refreshed on every request from Shopify.

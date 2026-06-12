@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# After deploying, change the URL below to your production domain
+# (or remove this line — crawlers auto-discover /sitemap.xml).
+Sitemap: https://gta-threads-showcase.lovable.app/sitemap.xml
+

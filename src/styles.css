@@ -1,0 +1,143 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  --font-display: "Fraunces", "Times New Roman", serif;
+  --font-script: "Caveat", cursive;
+  --font-sans: "DM Sans", ui-sans-serif, system-ui, sans-serif;
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+
+  --color-rose: var(--rose);
+  --color-bloom: var(--bloom);
+  --color-sage: var(--sage);
+  --color-cream: var(--cream);
+
+  --animate-marquee: marquee 38s linear infinite;
+  --animate-spin-slow: spin 24s linear infinite;
+  --animate-float: float 7s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-100%); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-12px) rotate(4deg); }
+}
+
+:root {
+  --radius: 1.25rem;
+  --background: oklch(0.975 0.012 50);            /* #FFF7F3 blush paper */
+  --foreground: oklch(0.21 0.03 20);              /* #2A1A1F plum-black */
+  --card: oklch(0.99 0.008 60);
+  --card-foreground: oklch(0.21 0.03 20);
+  --popover: oklch(0.99 0.008 60);
+  --popover-foreground: oklch(0.21 0.03 20);
+  --primary: oklch(0.21 0.03 20);
+  --primary-foreground: oklch(0.975 0.012 50);
+  --secondary: oklch(0.93 0.025 40);
+  --secondary-foreground: oklch(0.21 0.03 20);
+  --muted: oklch(0.93 0.02 50);
+  --muted-foreground: oklch(0.48 0.03 30);
+  --accent: oklch(0.56 0.18 0);                   /* #C8447A raspberry */
+  --accent-foreground: oklch(0.985 0.005 50);
+  --destructive: oklch(0.577 0.245 27.325);
+  --destructive-foreground: oklch(0.984 0.003 247.858);
+  --border: oklch(0.88 0.025 40);
+  --input: oklch(0.88 0.025 40);
+  --ring: oklch(0.56 0.18 0);
+
+  --rose: oklch(0.78 0.105 5);                    /* soft pink */
+  --bloom: oklch(0.56 0.18 0);                    /* raspberry */
+  --sage: oklch(0.78 0.05 130);                   /* sage */
+  --cream: oklch(0.94 0.03 70);
+}
+
+.dark {
+  --background: oklch(0.16 0.02 20);
+  --foreground: oklch(0.97 0.012 50);
+  --card: oklch(0.21 0.03 20);
+  --card-foreground: oklch(0.97 0.012 50);
+  --popover: oklch(0.21 0.03 20);
+  --popover-foreground: oklch(0.97 0.012 50);
+  --primary: oklch(0.97 0.012 50);
+  --primary-foreground: oklch(0.16 0.02 20);
+  --secondary: oklch(0.25 0.025 20);
+  --secondary-foreground: oklch(0.97 0.012 50);
+  --muted: oklch(0.25 0.025 20);
+  --muted-foreground: oklch(0.72 0.02 40);
+  --accent: oklch(0.62 0.18 0);
+  --accent-foreground: oklch(0.16 0.02 20);
+  --border: oklch(1 0 0 / 12%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.62 0.18 0);
+}
+
+@layer base {
+  * { border-color: var(--color-border); }
+  html {
+    scroll-behavior: smooth;
+    font-family: var(--font-sans);
+  }
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-accent-foreground);
+  }
+}
+
+@utility eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-script);
+  font-size: 1.25rem;
+  color: var(--color-bloom);
+}
+
+@utility soft-card {
+  border-radius: 1.5rem;
+  background: var(--color-card);
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--color-foreground) 6%, transparent);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
