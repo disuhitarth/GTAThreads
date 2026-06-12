@@ -32,6 +32,7 @@ export interface ShopifyProductNode {
   images: { edges: Array<{ node: ShopifyImage }> };
   variants: { edges: Array<{ node: ShopifyVariant }> };
   options: Array<{ name: string; values: string[] }>;
+  collections: { edges: Array<{ node: { id: string; handle: string; title: string } }> };
 }
 
 export interface ShopifyProduct {
@@ -93,6 +94,7 @@ const PRODUCT_FIELDS = `
     } }
   }
   options { name values }
+  collections(first: 10) { edges { node { id handle title } } }
 `;
 
 const PRODUCTS_QUERY = `
