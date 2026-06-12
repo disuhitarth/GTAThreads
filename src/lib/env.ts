@@ -22,15 +22,15 @@ function read(name: string, fallback: string): string {
 
 export const SHOPIFY_STORE_DOMAIN = read(
   "VITE_SHOPIFY_STORE_DOMAIN",
-  "xv5ybs-3a.myshopify.com",
+  "gtathreads-store.myshopify.com",
 );
 
 export const SHOPIFY_STOREFRONT_TOKEN = read(
   "VITE_SHOPIFY_STOREFRONT_TOKEN",
-  "c1c4c55e1584601def5b8658914473da",
+  "c9c83a40f0d6dd0a7cbe2a85329f6413",
 );
 
-export const SHOPIFY_API_VERSION = read("VITE_SHOPIFY_API_VERSION", "2025-07");
+export const SHOPIFY_API_VERSION = read("VITE_SHOPIFY_API_VERSION", "2026-04");
 
 /** Absolute origin used in canonical URLs, JSON-LD, sitemap, OG tags. No trailing slash. */
 export const SITE_URL = read(

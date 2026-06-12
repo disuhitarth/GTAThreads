@@ -49,6 +49,11 @@ function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
       <div className="max-w-md text-center">
         <h1 className="font-display text-3xl italic">A loose thread.</h1>
         <p className="mt-2 text-sm text-muted-foreground">Let's try that again.</p>
+        {error.message && (
+          <p className="mt-4 rounded-xl border border-dashed border-border bg-card p-3 text-xs text-muted-foreground/80 max-w-sm mx-auto break-words text-left font-mono">
+            {error.message}
+          </p>
+        )}
         <button
           onClick={() => {
             router.invalidate();
