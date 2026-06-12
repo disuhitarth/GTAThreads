@@ -38,6 +38,15 @@ export interface ShopifyProduct {
   node: ShopifyProductNode;
 }
 
+export interface ShopifyCollectionNode {
+  id: string;
+  title: string;
+  description: string;
+  handle: string;
+  image: ShopifyImage | null;
+  products?: { edges: ShopifyProduct[] };
+}
+
 export async function storefrontApiRequest<T = any>(
   query: string,
   variables: Record<string, any> = {},
@@ -100,6 +109,36 @@ const PRODUCT_BY_HANDLE_QUERY = `
   }
 `;
 
+const COLLECTION_BY_HANDLE_QUERY = `
+  query GetCollectionByHandle($handle: String!) {
+    collection(handle: $handle) {
+      id
+      title
+      description
+      image { url altText }
+      products(first: 48) {
+        edges { node { ${PRODUCT_FIELDS} } }
+      }
+    }
+  }
+`;
+
+const COLLECTIONS_QUERY = `
+  query GetCollections($first: Int!) {
+    collections(first: $first) {
+      edges {
+        node {
+          id
+          title
+          handle
+          description
+          image { url altText }
+        }
+      }
+    }
+  }
+`;
+
 export async function fetchProducts(first = 24, query?: string): Promise<ShopifyProduct[]> {
   const res = await storefrontApiRequest<{ products: { edges: ShopifyProduct[] } }>(
     PRODUCTS_QUERY,
@@ -114,6 +153,22 @@ export async function fetchProductByHandle(handle: string): Promise<ShopifyProdu
     { handle },
   );
   return res?.data?.productByHandle ?? null;
+}
+
+export async function fetchCollections(first = 50): Promise<ShopifyCollectionNode[]> {
+  const res = await storefrontApiRequest<{ collections: { edges: Array<{ node: ShopifyCollectionNode }> } }>(
+    COLLECTIONS_QUERY,
+    { first },
+  );
+  return res?.data?.collections?.edges?.map((edge) => edge.node) ?? [];
+}
+
+export async function fetchCollectionByHandle(handle: string): Promise<ShopifyCollectionNode | null> {
+  const res = await storefrontApiRequest<{ collection: ShopifyCollectionNode | null }>(
+    COLLECTION_BY_HANDLE_QUERY,
+    { handle },
+  );
+  return res?.data?.collection ?? null;
 }
 
 // ------- Cart -------

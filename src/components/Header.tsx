@@ -1,22 +1,67 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
 import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
+import { useQuery } from "@tanstack/react-query";
 import { Logo } from "@/components/brand/Logo";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { useCartStore } from "@/stores/cartStore";
 import { cn } from "@/lib/utils";
 import { OCCASIONS } from "@/lib/occasions";
+import { CATEGORIES } from "@/lib/categories";
+import { fetchCollections } from "@/lib/shopify";
 
 const NAV = [
   { to: "/shop", label: "Shop" },
   { to: "/category", label: "Categories" },
-  { to: "/occasions", label: "Occasions", hasDropdown: true },
+  { to: "/shop", label: "Collections", hasDropdown: true },
   { to: "/gift-finder", label: "Gift finder" },
   { to: "/custom-orders", label: "Custom" },
   { to: "/journal", label: "Journal" },
 ];
 
+function getCollectionLink(c: { title: string; handle: string }) {
+  const customOccasion = OCCASIONS.find(
+    (o) =>
+      o.slug === c.handle ||
+      c.title.toLowerCase().includes(o.title.toLowerCase()) ||
+      o.title.toLowerCase().includes(c.title.toLowerCase())
+  );
+  const customCategory = CATEGORIES.find(
+    (cat) =>
+      cat.slug === c.handle ||
+      c.title.toLowerCase().includes(cat.title.toLowerCase()) ||
+      cat.title.toLowerCase().includes(c.title.toLowerCase())
+  );
+
+  if (customOccasion) {
+    return {
+      to: "/occasions/$slug" as const,
+      params: { slug: customOccasion.slug },
+      iconSlug: customOccasion.slug,
+    };
+  }
+  if (customCategory) {
+    return {
+      to: "/category/$slug" as const,
+      params: { slug: customCategory.slug },
+      iconSlug: customCategory.slug,
+    };
+  }
+
+  return {
+    to: "/collections/$handle" as const,
+    params: { handle: c.handle },
+    iconSlug: c.handle,
+  };
+}
+
 export function Header() {
+  const { data: collections = [] } = useQuery({
+    queryKey: ["collections"],
+    queryFn: () => fetchCollections(50),
+    staleTime: 1000 * 60 * 5,
+  });
+
   const totalItems = useCartStore((s) =>
     s.items.reduce((sum, i) => sum + i.quantity, 0),
   );
@@ -70,17 +115,22 @@ export function Header() {
                   )}
                 >
                   <div className="max-h-[70vh] overflow-y-auto rounded-2xl border border-border bg-card p-3 shadow-lg">
-                    {OCCASIONS.map((o) => (
-                      <Link
-                        key={o.slug}
-                        to="/occasions/$slug"
-                        params={{ slug: o.slug }}
-                        className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm hover:bg-secondary/60"
-                      >
-                        <CategoryIcon slug={o.slug} className="h-7 w-7 shrink-0" alt="" />
-                        <span>{o.title}</span>
-                      </Link>
-                    ))}
+                    {collections
+                      .filter((c) => c.handle !== "frontpage")
+                      .map((c) => {
+                        const link = getCollectionLink(c);
+                        return (
+                          <Link
+                            key={c.id}
+                            to={link.to as any}
+                            params={link.params as any}
+                            className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm hover:bg-secondary/60"
+                          >
+                            <CategoryIcon slug={link.iconSlug} className="h-7 w-7 shrink-0" alt="" />
+                            <span>{c.title}</span>
+                          </Link>
+                        );
+                      })}
                   </div>
                 </div>
               </div>
@@ -149,18 +199,23 @@ export function Header() {
             </Link>
           ))}
           <div className="mt-6 grid grid-cols-2 gap-2 border-t border-border pt-6">
-            {OCCASIONS.map((o) => (
-              <Link
-                key={o.slug}
-                to="/occasions/$slug"
-                params={{ slug: o.slug }}
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-2 rounded-xl bg-secondary/60 px-3 py-2 text-sm"
-              >
-                <CategoryIcon slug={o.slug} className="h-6 w-6 shrink-0" alt="" />
-                {o.title}
-              </Link>
-            ))}
+            {collections
+              .filter((c) => c.handle !== "frontpage")
+              .map((c) => {
+                const link = getCollectionLink(c);
+                return (
+                  <Link
+                    key={c.id}
+                    to={link.to as any}
+                    params={link.params as any}
+                    onClick={() => setMobileOpen(false)}
+                    className="flex items-center gap-2 rounded-xl bg-secondary/60 px-3 py-2 text-sm"
+                  >
+                    <CategoryIcon slug={link.iconSlug} className="h-6 w-6 shrink-0" alt="" />
+                    <span>{c.title}</span>
+                  </Link>
+                );
+              })}
           </div>
         </nav>
       </div>

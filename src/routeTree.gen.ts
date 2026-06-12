@@ -28,6 +28,7 @@ import { Route as CategoryIndexRouteImport } from './routes/category.index'
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as OccasionsSlugRouteImport } from './routes/occasions.$slug'
 import { Route as JournalSlugRouteImport } from './routes/journal.$slug'
+import { Route as CollectionsHandleRouteImport } from './routes/collections.$handle'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
@@ -126,6 +127,11 @@ const JournalSlugRoute = JournalSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => JournalRoute,
 } as any)
+const CollectionsHandleRoute = CollectionsHandleRouteImport.update({
+  id: '/collections/$handle',
+  path: '/collections/$handle',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategorySlugRoute = CategorySlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -153,6 +159,7 @@ export interface FileRoutesByFullPath {
   '/size-guide': typeof SizeGuideRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/collections/$handle': typeof CollectionsHandleRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/occasions/$slug': typeof OccasionsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -173,6 +180,7 @@ export interface FileRoutesByTo {
   '/size-guide': typeof SizeGuideRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/collections/$handle': typeof CollectionsHandleRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/occasions/$slug': typeof OccasionsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -197,6 +205,7 @@ export interface FileRoutesById {
   '/size-guide': typeof SizeGuideRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
+  '/collections/$handle': typeof CollectionsHandleRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/occasions/$slug': typeof OccasionsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
@@ -222,6 +231,7 @@ export interface FileRouteTypes {
     | '/size-guide'
     | '/api/chat'
     | '/category/$slug'
+    | '/collections/$handle'
     | '/journal/$slug'
     | '/occasions/$slug'
     | '/product/$handle'
@@ -242,6 +252,7 @@ export interface FileRouteTypes {
     | '/size-guide'
     | '/api/chat'
     | '/category/$slug'
+    | '/collections/$handle'
     | '/journal/$slug'
     | '/occasions/$slug'
     | '/product/$handle'
@@ -265,6 +276,7 @@ export interface FileRouteTypes {
     | '/size-guide'
     | '/api/chat'
     | '/category/$slug'
+    | '/collections/$handle'
     | '/journal/$slug'
     | '/occasions/$slug'
     | '/product/$handle'
@@ -288,6 +300,7 @@ export interface RootRouteChildren {
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SizeGuideRoute: typeof SizeGuideRoute
   ApiChatRoute: typeof ApiChatRoute
+  CollectionsHandleRoute: typeof CollectionsHandleRoute
   ProductHandleRoute: typeof ProductHandleRoute
 }
 
@@ -426,6 +439,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JournalSlugRouteImport
       parentRoute: typeof JournalRoute
     }
+    '/collections/$handle': {
+      id: '/collections/$handle'
+      path: '/collections/$handle'
+      fullPath: '/collections/$handle'
+      preLoaderRoute: typeof CollectionsHandleRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/category/$slug': {
       id: '/category/$slug'
       path: '/$slug'
@@ -499,6 +519,7 @@ const rootRouteChildren: RootRouteChildren = {
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SizeGuideRoute: SizeGuideRoute,
   ApiChatRoute: ApiChatRoute,
+  CollectionsHandleRoute: CollectionsHandleRoute,
   ProductHandleRoute: ProductHandleRoute,
 }
 export const routeTree = rootRouteImport
