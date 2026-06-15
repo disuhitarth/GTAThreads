@@ -1,8 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import { Heart, Loader2, Plus } from "lucide-react";
-import { useState } from "react";
 import { formatPrice, type ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
+import { useWishlistStore } from "@/stores/wishlistStore";
 import { PRODUCT_PLACEHOLDER } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
@@ -20,7 +20,8 @@ export function ProductCard({ product, className, priority }: ProductCardProps) 
   const price = node.priceRange.minVariantPrice;
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
-  const [favorited, setFavorited] = useState(false);
+  const toggleWish = useWishlistStore((s) => s.toggle);
+  const isFavorited = useWishlistStore((s) => s.isFavorited(node.id));
 
   const onQuickAdd = async (e: React.MouseEvent) => {
     e.preventDefault();
@@ -39,7 +40,13 @@ export function ProductCard({ product, className, priority }: ProductCardProps) 
   const onFav = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    setFavorited((v) => !v);
+    toggleWish({
+      id: node.id,
+      handle: node.handle,
+      title: node.title,
+      price: node.priceRange.minVariantPrice,
+      image: primary ? { url: primary.url, altText: primary.altText ?? undefined } : undefined,
+    });
   };
 
   return (
@@ -85,7 +92,7 @@ export function ProductCard({ product, className, priority }: ProductCardProps) 
           className="absolute left-3 top-3 grid h-11 w-11 place-items-center rounded-full bg-background/85 text-foreground backdrop-blur transition-colors hover:text-bloom"
         >
           <Heart
-            className={cn("h-4 w-4 transition-all", favorited && "fill-bloom text-bloom scale-110")}
+            className={cn("h-4 w-4 transition-all", isFavorited && "fill-bloom text-bloom scale-110")}
           />
         </button>
 

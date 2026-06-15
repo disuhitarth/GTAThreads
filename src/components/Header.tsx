@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { ChevronDown, Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Logo } from "@/components/brand/Logo";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { SearchOverlay } from "@/components/SearchOverlay";
 import { useCartStore } from "@/stores/cartStore";
+import { useWishlistStore } from "@/stores/wishlistStore";
 import { cn } from "@/lib/utils";
 import { OCCASIONS } from "@/lib/occasions";
 import { CATEGORIES } from "@/lib/categories";
@@ -64,6 +65,7 @@ export function Header() {
   });
 
   const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
+  const wishlistCount = useWishlistStore((s) => s.items.length);
   const setOpen = useCartStore((s) => s.setOpen);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -160,6 +162,18 @@ export function Header() {
           >
             <Search className="h-5 w-5" strokeWidth={1.5} />
           </button>
+          <Link
+            to="/wishlist"
+            aria-label="Wishlist"
+            className="relative grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
+          >
+            <Heart className="h-5 w-5" strokeWidth={1.5} />
+            {mounted && wishlistCount > 0 && (
+              <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-foreground px-1 text-[10px] font-medium text-background">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
           <button
             aria-label="Open cart"
             onClick={() => setOpen(true)}
@@ -210,6 +224,13 @@ export function Header() {
               {item.label}
             </Link>
           ))}
+            <Link
+              to="/wishlist"
+              onClick={() => setMobileOpen(false)}
+              className="font-display text-4xl italic tracking-tight text-bloom"
+            >
+              Wishlist
+            </Link>
           <div className="mt-6 grid grid-cols-2 gap-2 border-t border-border pt-6">
             {collections
               .filter((c) => c.handle !== "frontpage")

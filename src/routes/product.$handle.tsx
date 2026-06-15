@@ -1,9 +1,10 @@
 import { useState, Suspense } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft, Heart, Loader2 } from "lucide-react";
 import { fetchProductByHandle, formatPrice } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
+import { useWishlistStore } from "@/stores/wishlistStore";
 import { cn } from "@/lib/utils";
 
 const productQueryOptions = (handle: string) => ({
@@ -172,6 +173,19 @@ function ProductInner() {
     });
   };
 
+  const toggleWish = useWishlistStore((s) => s.toggle);
+  const isFavorited = useWishlistStore((s) => s.isFavorited(product.id));
+  const onFav = () => {
+    const primary = product.images.edges[0]?.node;
+    toggleWish({
+      id: product.id,
+      handle: product.handle,
+      title: product.title,
+      price: product.priceRange.minVariantPrice,
+      image: primary ? { url: primary.url, altText: primary.altText ?? undefined } : undefined,
+    });
+  };
+
   const images = product.images.edges;
 
   return (
@@ -282,19 +296,33 @@ function ProductInner() {
               </div>
             )}
 
-            <button
-              onClick={onAdd}
-              disabled={isLoading || !selected?.availableForSale}
-              className="mt-10 inline-flex h-14 w-full items-center justify-center bg-foreground text-sm uppercase tracking-[0.22em] text-background transition-colors hover:bg-accent disabled:opacity-50"
-            >
-              {isLoading ? (
-                <Loader2 className="h-4 w-4 animate-spin" />
-              ) : selected?.availableForSale ? (
-                "Add to bag"
-              ) : (
-                "Sold out"
-              )}
-            </button>
+            <div className="mt-10 flex items-center gap-3">
+              <button
+                onClick={onAdd}
+                disabled={isLoading || !selected?.availableForSale}
+                className="flex-1 inline-flex h-14 items-center justify-center bg-foreground text-sm uppercase tracking-[0.22em] text-background transition-colors hover:bg-accent disabled:opacity-50"
+              >
+                {isLoading ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : selected?.availableForSale ? (
+                  "Add to bag"
+                ) : (
+                  "Sold out"
+                )}
+              </button>
+              <button
+                onClick={onFav}
+                aria-label={isFavorited ? "Remove from wishlist" : "Add to wishlist"}
+                className="grid h-14 w-14 shrink-0 place-items-center border border-border transition-colors hover:border-bloom hover:text-bloom"
+              >
+                <Heart
+                  className={cn(
+                    "h-5 w-5 transition-all",
+                    isFavorited && "fill-bloom text-bloom scale-110",
+                  )}
+                />
+              </button>
+            </div>
 
             <ul className="mt-8 space-y-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
               <li>· Embroidered to order in the GTA</li>

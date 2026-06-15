@@ -24,6 +24,7 @@ export function Footer() {
               { to: "/occasions", label: "By occasion" },
               { to: "/gift-finder", label: "Gift finder" },
               { to: "/custom-orders", label: "Custom orders" },
+              { to: "/wishlist", label: "Wishlist" },
             ]}
           />
           <FooterCol
