@@ -17,8 +17,12 @@ export function ProductCard({ product, className, priority }: ProductCardProps) 
   const node = product.node;
   const primary = node.images.edges[0]?.node;
   const secondary = node.images.edges[1]?.node ?? primary;
-  const variant = node.variants.edges.find((v) => v.node.availableForSale)?.node;
-  const price = node.priceRange.minVariantPrice;
+    const variant = node.variants.edges.find((v) => v.node.availableForSale)?.node;
+    const price = node.priceRange.minVariantPrice;
+    const tags = (node as { tags?: string[] }).tags ?? [];
+    const badges = [];
+    if (tags.some((t) => t.toLowerCase() === "new")) badges.push("NEW");
+    if (tags.some((t) => t.toLowerCase() === "bestseller" || t.toLowerCase() === "best seller")) badges.push("BESTSELLER");
   const addItem = useCartStore((s) => s.addItem);
   const isLoading = useCartStore((s) => s.isLoading);
   const toggleWish = useWishlistStore((s) => s.toggle);
@@ -96,6 +100,19 @@ export function ProductCard({ product, className, priority }: ProductCardProps) 
             className={cn("h-4 w-4 transition-all", isFavorited && "fill-bloom text-bloom scale-110")}
           />
         </button>
+
+        {badges.length > 0 && (
+          <div className="absolute right-3 top-3 flex flex-col gap-1">
+            {badges.map((b) => (
+              <span
+                key={b}
+                className="rounded-full bg-foreground px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wider text-background"
+              >
+                {b}
+              </span>
+            ))}
+          </div>
+        )}
 
         {variant && (
           <button

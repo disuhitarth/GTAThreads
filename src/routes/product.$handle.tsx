@@ -5,6 +5,7 @@ import { ArrowLeft, Heart, Loader2, Share2, X } from "lucide-react";
 import { fetchProductByHandle, formatPrice } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
+import { useRecentlyViewedStore } from "@/stores/recentlyViewedStore";
 import { PriceDisplay } from "@/components/PriceDisplay";
 import { cn } from "@/lib/utils";
 
@@ -190,6 +191,18 @@ function ProductInner() {
   const images = product.images.edges;
   const [zoomImage, setZoomImage] = useState<number | null>(null);
 
+  const addRecent = useRecentlyViewedStore((s) => s.addItem);
+  useEffect(() => {
+    const primary = images[0]?.node;
+    addRecent({
+      id: product.id,
+      handle: product.handle,
+      title: product.title,
+      price: product.priceRange.minVariantPrice,
+      image: primary ? { url: primary.url, altText: primary.altText ?? undefined } : undefined,
+    });
+  }, [product.id]);
+
   const onShare = async () => {
     const url = `${SITE_URL}/product/${product.handle}`;
     if (navigator.share) {
@@ -200,7 +213,8 @@ function ProductInner() {
   };
 
   return (
-    <section className="bg-background px-5 pb-24 pt-28 sm:px-8 sm:pt-32">
+    <>
+      <section className="bg-background px-5 pb-24 pt-28 sm:px-8 sm:pt-32">
       <div className="mx-auto max-w-[1500px]">
         <Link
           to="/shop"
@@ -374,6 +388,55 @@ function ProductInner() {
           />
         </div>
       )}
+    </section>
+
+    <RecentViewSection />
+    </>
+  );
+}
+
+function RecentViewSection() {
+  const items = useRecentlyViewedStore((s) => s.items);
+  if (items.length < 2) return null;
+  const others = items.slice(1);
+  return (
+    <section className="bg-background px-5 pb-24 sm:px-8">
+      <div className="mx-auto max-w-[1500px]">
+        <h2 className="font-display text-3xl italic tracking-tight sm:text-4xl">
+          Recently viewed
+        </h2>
+        <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+          {others.map((p) => (
+            <Link
+              key={p.id}
+              to="/product/$handle"
+              params={{ handle: p.handle }}
+              className="group block"
+            >
+              <div className="relative aspect-[4/5] overflow-hidden rounded-3xl bg-secondary/60">
+                {p.image ? (
+                  <img
+                    src={p.image.url}
+                    alt={p.image.altText ?? p.title}
+                    loading="lazy"
+                    className="h-full w-full object-cover transition-all duration-700 group-hover:scale-105"
+                  />
+                ) : (
+                  <div className="flex h-full items-center justify-center text-muted-foreground text-xs p-4 text-center">
+                    No image
+                  </div>
+                )}
+              </div>
+              <div className="mt-3 flex items-baseline justify-between gap-3 px-1">
+                <h3 className="truncate text-sm font-medium">{p.title}</h3>
+                <span className="shrink-0 font-display text-lg text-bloom">
+                  <PriceDisplay amount={p.price.amount} currency={p.price.currencyCode} />
+                </span>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
