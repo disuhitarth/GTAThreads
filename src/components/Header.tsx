@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Menu, ShoppingBag, X } from "lucide-react";
+import { ChevronDown, Menu, Search, ShoppingBag, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Logo } from "@/components/brand/Logo";
 import { CategoryIcon } from "@/components/CategoryIcon";
+import { SearchOverlay } from "@/components/SearchOverlay";
 import { useCartStore } from "@/stores/cartStore";
 import { cn } from "@/lib/utils";
 import { OCCASIONS } from "@/lib/occasions";
@@ -67,6 +68,7 @@ export function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [occOpen, setOccOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -78,6 +80,7 @@ export function Header() {
   }, []);
 
   return (
+    <>
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
@@ -151,6 +154,13 @@ export function Header() {
 
         <div className="flex items-center justify-end gap-1">
           <button
+            aria-label="Search products"
+            onClick={() => setSearchOpen(true)}
+            className="grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
+          >
+            <Search className="h-5 w-5" strokeWidth={1.5} />
+          </button>
+          <button
             aria-label="Open cart"
             onClick={() => setOpen(true)}
             className="relative grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
@@ -222,5 +232,7 @@ export function Header() {
         </nav>
       </div>
     </header>
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+    </>
   );
 }

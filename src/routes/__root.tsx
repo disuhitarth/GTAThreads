@@ -190,7 +190,7 @@ function AppShell() {
       <Grain />
       <FlowerCursor />
       <Header />
-      <main>
+      <main className="animate-fade-in">
         <Outlet />
       </main>
       <Footer />
