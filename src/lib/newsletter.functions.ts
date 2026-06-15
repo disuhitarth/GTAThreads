@@ -9,7 +9,10 @@ export const subscribeToNewsletter = createServerFn({ method: "POST" })
     const version = process.env.VITE_SHOPIFY_API_VERSION || "2026-07";
 
     if (!token || !domain) {
-      console.warn("[newsletter] Shopify Admin API not configured. Email captured locally:", data.email);
+      console.warn(
+        "[newsletter] Shopify Admin API not configured. Email captured locally:",
+        data.email,
+      );
       return { ok: true as const, provider: "local" as const };
     }
 

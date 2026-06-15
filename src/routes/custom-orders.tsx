@@ -255,7 +255,9 @@ function CustomOrders() {
 
       try {
         localStorage.removeItem(STORAGE_KEY);
-      } catch { /* ignore */ }
+      } catch {
+        /* ignore */
+      }
 
       setSubmitted(true);
       toast.success("Your brief is on its way!");

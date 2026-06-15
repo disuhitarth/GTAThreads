@@ -22,17 +22,21 @@ import { Route as GiftFinderRouteImport } from './routes/gift-finder'
 import { Route as CustomOrdersRouteImport } from './routes/custom-orders'
 import { Route as CategoryRouteImport } from './routes/category'
 import { Route as CareRouteImport } from './routes/care'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OccasionsIndexRouteImport } from './routes/occasions.index'
 import { Route as JournalIndexRouteImport } from './routes/journal.index'
 import { Route as CategoryIndexRouteImport } from './routes/category.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ProductHandleRouteImport } from './routes/product.$handle'
 import { Route as OccasionsSlugRouteImport } from './routes/occasions.$slug'
 import { Route as JournalSlugRouteImport } from './routes/journal.$slug'
 import { Route as CollectionsHandleRouteImport } from './routes/collections.$handle'
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
+import { Route as AdminProductsRouteImport } from './routes/admin.products'
+import { Route as AdminOrdersRouteImport } from './routes/admin.orders'
 
 const TermsRoute = TermsRouteImport.update({
   id: '/terms',
@@ -99,6 +103,11 @@ const CareRoute = CareRouteImport.update({
   path: '/care',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -123,6 +132,11 @@ const CategoryIndexRoute = CategoryIndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => CategoryRoute,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ProductHandleRoute = ProductHandleRouteImport.update({
   id: '/product/$handle',
@@ -154,10 +168,21 @@ const ApiChatRoute = ApiChatRouteImport.update({
   path: '/api/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminProductsRoute = AdminProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminOrdersRoute = AdminOrdersRouteImport.update({
+  id: '/orders',
+  path: '/orders',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/care': typeof CareRoute
   '/category': typeof CategoryRouteWithChildren
   '/custom-orders': typeof CustomOrdersRoute
@@ -171,12 +196,15 @@ export interface FileRoutesByFullPath {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/size-guide': typeof SizeGuideRoute
   '/terms': typeof TermsRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/products': typeof AdminProductsRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/collections/$handle': typeof CollectionsHandleRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/occasions/$slug': typeof OccasionsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
+  '/admin/': typeof AdminIndexRoute
   '/category/': typeof CategoryIndexRoute
   '/journal/': typeof JournalIndexRoute
   '/occasions/': typeof OccasionsIndexRoute
@@ -194,12 +222,15 @@ export interface FileRoutesByTo {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/size-guide': typeof SizeGuideRoute
   '/terms': typeof TermsRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/products': typeof AdminProductsRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/collections/$handle': typeof CollectionsHandleRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/occasions/$slug': typeof OccasionsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
+  '/admin': typeof AdminIndexRoute
   '/category': typeof CategoryIndexRoute
   '/journal': typeof JournalIndexRoute
   '/occasions': typeof OccasionsIndexRoute
@@ -208,6 +239,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/care': typeof CareRoute
   '/category': typeof CategoryRouteWithChildren
   '/custom-orders': typeof CustomOrdersRoute
@@ -221,12 +253,15 @@ export interface FileRoutesById {
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/size-guide': typeof SizeGuideRoute
   '/terms': typeof TermsRoute
+  '/admin/orders': typeof AdminOrdersRoute
+  '/admin/products': typeof AdminProductsRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/collections/$handle': typeof CollectionsHandleRoute
   '/journal/$slug': typeof JournalSlugRoute
   '/occasions/$slug': typeof OccasionsSlugRoute
   '/product/$handle': typeof ProductHandleRoute
+  '/admin/': typeof AdminIndexRoute
   '/category/': typeof CategoryIndexRoute
   '/journal/': typeof JournalIndexRoute
   '/occasions/': typeof OccasionsIndexRoute
@@ -236,6 +271,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/care'
     | '/category'
     | '/custom-orders'
@@ -249,12 +285,15 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/size-guide'
     | '/terms'
+    | '/admin/orders'
+    | '/admin/products'
     | '/api/chat'
     | '/category/$slug'
     | '/collections/$handle'
     | '/journal/$slug'
     | '/occasions/$slug'
     | '/product/$handle'
+    | '/admin/'
     | '/category/'
     | '/journal/'
     | '/occasions/'
@@ -272,12 +311,15 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/size-guide'
     | '/terms'
+    | '/admin/orders'
+    | '/admin/products'
     | '/api/chat'
     | '/category/$slug'
     | '/collections/$handle'
     | '/journal/$slug'
     | '/occasions/$slug'
     | '/product/$handle'
+    | '/admin'
     | '/category'
     | '/journal'
     | '/occasions'
@@ -285,6 +327,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/care'
     | '/category'
     | '/custom-orders'
@@ -298,12 +341,15 @@ export interface FileRouteTypes {
     | '/sitemap.xml'
     | '/size-guide'
     | '/terms'
+    | '/admin/orders'
+    | '/admin/products'
     | '/api/chat'
     | '/category/$slug'
     | '/collections/$handle'
     | '/journal/$slug'
     | '/occasions/$slug'
     | '/product/$handle'
+    | '/admin/'
     | '/category/'
     | '/journal/'
     | '/occasions/'
@@ -312,6 +358,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   CareRoute: typeof CareRoute
   CategoryRoute: typeof CategoryRouteWithChildren
   CustomOrdersRoute: typeof CustomOrdersRoute
@@ -423,6 +470,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CareRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -457,6 +511,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/category/'
       preLoaderRoute: typeof CategoryIndexRouteImport
       parentRoute: typeof CategoryRoute
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/product/$handle': {
       id: '/product/$handle'
@@ -500,8 +561,36 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin/products': {
+      id: '/admin/products'
+      path: '/products'
+      fullPath: '/admin/products'
+      preLoaderRoute: typeof AdminProductsRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/orders': {
+      id: '/admin/orders'
+      path: '/orders'
+      fullPath: '/admin/orders'
+      preLoaderRoute: typeof AdminOrdersRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminOrdersRoute: typeof AdminOrdersRoute
+  AdminProductsRoute: typeof AdminProductsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminOrdersRoute: AdminOrdersRoute,
+  AdminProductsRoute: AdminProductsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface CategoryRouteChildren {
   CategorySlugRoute: typeof CategorySlugRoute
@@ -547,6 +636,7 @@ const OccasionsRouteWithChildren = OccasionsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   CareRoute: CareRoute,
   CategoryRoute: CategoryRouteWithChildren,
   CustomOrdersRoute: CustomOrdersRoute,
