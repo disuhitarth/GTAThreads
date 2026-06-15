@@ -165,7 +165,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "gta-threads-cart",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
       partialize: (state) => ({
         items: state.items,
         cartId: state.cartId,

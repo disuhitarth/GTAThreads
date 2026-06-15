@@ -1,4 +1,5 @@
 import { createServerFn } from "@tanstack/react-start";
+import { ADMIN_PASSWORD, SHOPIFY_ADMIN_TOKEN, SHOPIFY_STORE_DOMAIN, SHOPIFY_API_VERSION } from "@/lib/env";
 
 export const verifyAdminPassword = createServerFn({ method: "POST" })
   .validator((input: unknown) => {
@@ -8,18 +9,17 @@ export const verifyAdminPassword = createServerFn({ method: "POST" })
     return { password: String((input as { password: string }).password) };
   })
   .handler(async ({ data }) => {
-    const real = process.env.ADMIN_PASSWORD;
-    if (!real) {
+    if (!ADMIN_PASSWORD) {
       console.warn("[admin] ADMIN_PASSWORD not set in environment");
       return { ok: false };
     }
-    return { ok: data.password === real };
+    return { ok: data.password === ADMIN_PASSWORD };
   });
 
 export const fetchAdminProducts = createServerFn({ method: "GET" }).handler(async () => {
-  const token = process.env.SHOPIFY_ADMIN_TOKEN;
-  const domain = process.env.VITE_SHOPIFY_STORE_DOMAIN;
-  const version = process.env.VITE_SHOPIFY_API_VERSION || "2026-04";
+  const token = SHOPIFY_ADMIN_TOKEN;
+  const domain = SHOPIFY_STORE_DOMAIN;
+  const version = SHOPIFY_API_VERSION;
 
   if (!token || !domain) {
     return { ok: false as const, error: "Admin API not configured", products: [] };
@@ -46,9 +46,9 @@ export const fetchAdminProducts = createServerFn({ method: "GET" }).handler(asyn
 });
 
 export const fetchAdminOrders = createServerFn({ method: "GET" }).handler(async () => {
-  const token = process.env.SHOPIFY_ADMIN_TOKEN;
-  const domain = process.env.VITE_SHOPIFY_STORE_DOMAIN;
-  const version = process.env.VITE_SHOPIFY_API_VERSION || "2026-04";
+  const token = SHOPIFY_ADMIN_TOKEN;
+  const domain = SHOPIFY_STORE_DOMAIN;
+  const version = SHOPIFY_API_VERSION;
 
   if (!token || !domain) {
     return { ok: false as const, error: "Admin API not configured", orders: [] };

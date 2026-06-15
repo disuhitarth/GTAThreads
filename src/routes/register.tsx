@@ -4,6 +4,7 @@ import { customerRegister, customerLogin, getCustomer } from "@/lib/shopify";
 import { useAuthStore } from "@/stores/authStore";
 
 export const Route = createFileRoute("/register")({
+  component: RegisterPage,
   head: () => ({
     meta: [
       { title: "Create account – GTA Threads" },

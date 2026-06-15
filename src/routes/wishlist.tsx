@@ -5,12 +5,13 @@ import { PriceDisplay } from "@/components/PriceDisplay";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/wishlist")({
+  component: WishlistPage,
   head: () => ({
     meta: [
-      { title: "Wishlist – GTA Threads" },
-      { name: "description", content: "Your saved favourites at GTA Threads." },
-      { property: "og:title", content: "Wishlist – GTA Threads" },
-      { name: "twitter:title", content: "Wishlist – GTA Threads" },
+      { title: "Wishlist — GTA Threads" },
+      { name: "description", content: "Your saved items." },
+      { property: "og:title", content: "Wishlist — GTA Threads" },
+      { property: "og:description", content: "Your saved items." },
     ],
   }),
 });

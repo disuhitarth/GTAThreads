@@ -27,7 +27,7 @@ export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
     }),
     {
       name: "gta-threads-recent",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
     },
   ),
 );

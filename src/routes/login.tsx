@@ -3,6 +3,7 @@ import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
 import { useAuthStore } from "@/stores/authStore";
 
 export const Route = createFileRoute("/login")({
+  component: LoginPage,
   head: () => ({
     meta: [
       { title: "Sign in – GTA Threads" },

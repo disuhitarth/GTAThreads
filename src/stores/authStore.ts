@@ -63,7 +63,7 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name: "gta-threads-auth",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
       partialize: (state) => ({ accessToken: state.accessToken }),
     },
   ),

@@ -16,7 +16,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
     }),
     {
       name: "gta-threads-currency",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
     },
   ),
 );

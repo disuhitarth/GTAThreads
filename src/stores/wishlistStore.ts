@@ -35,7 +35,7 @@ export const useWishlistStore = create<WishlistStore>()(
     }),
     {
       name: "gta-threads-wishlist",
-      storage: createJSONStorage(() => localStorage),
+      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
     },
   ),
 );

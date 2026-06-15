@@ -34,3 +34,6 @@ export const SHOPIFY_API_VERSION = read("VITE_SHOPIFY_API_VERSION", "2026-04");
 
 /** Absolute origin used in canonical URLs, JSON-LD, sitemap, OG tags. No trailing slash. */
 export const SITE_URL = read("VITE_SITE_URL", "https://gtathreads.netlify.app").replace(/\/$/, "");
+
+export const ADMIN_PASSWORD = read("ADMIN_PASSWORD", "");
+export const SHOPIFY_ADMIN_TOKEN = read("SHOPIFY_ADMIN_TOKEN", "");

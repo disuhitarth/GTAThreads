@@ -3,6 +3,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { customerRecover } from "@/lib/shopify";
 
 export const Route = createFileRoute("/reset-password")({
+  component: ResetPasswordPage,
   head: () => ({
     meta: [
       { title: "Reset password – GTA Threads" },
