@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { ssrSafeStorage } from "@/lib/ssrSafeStorage";
 import {
   addLineToShopifyCart,
   createShopifyCart,
@@ -165,7 +166,7 @@ export const useCartStore = create<CartStore>()(
     }),
     {
       name: "gta-threads-cart",
-      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
+      storage: createJSONStorage(ssrSafeStorage),
       partialize: (state) => ({
         items: state.items,
         cartId: state.cartId,

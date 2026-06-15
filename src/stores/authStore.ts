@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { ssrSafeStorage } from "@/lib/ssrSafeStorage";
 import { customerLogin, customerLogout, getCustomer } from "@/lib/shopify";
 import type { Customer } from "@/lib/shopify";
 
@@ -63,7 +64,7 @@ export const useAuthStore = create<AuthStore>()(
     }),
     {
       name: "gta-threads-auth",
-      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
+      storage: createJSONStorage(ssrSafeStorage),
       partialize: (state) => ({ accessToken: state.accessToken }),
     },
   ),

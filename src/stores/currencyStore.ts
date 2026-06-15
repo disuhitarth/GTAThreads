@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { ssrSafeStorage } from "@/lib/ssrSafeStorage";
 
 export type CurrencyCode = "CAD" | "USD";
 
@@ -16,7 +17,7 @@ export const useCurrencyStore = create<CurrencyStore>()(
     }),
     {
       name: "gta-threads-currency",
-      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
+      storage: createJSONStorage(ssrSafeStorage),
     },
   ),
 );

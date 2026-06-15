@@ -8,6 +8,7 @@ import { SearchOverlay } from "@/components/SearchOverlay";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { useAuthStore } from "@/stores/authStore";
+import { useHydrated } from "@/lib/useHydrated";
 import { cn } from "@/lib/utils";
 import { OCCASIONS } from "@/lib/occasions";
 import { CATEGORIES } from "@/lib/categories";
@@ -69,14 +70,13 @@ export function Header() {
   const wishlistCount = useWishlistStore((s) => s.items.length);
   const accessToken = useAuthStore((s) => s.accessToken);
   const setOpen = useCartStore((s) => s.setOpen);
+  const hydrated = useHydrated();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [occOpen, setOccOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
     useAuthStore.getState().hydrate();
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
@@ -189,14 +189,14 @@ export function Header() {
             className="relative grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
           >
             <Heart className="h-5 w-5" strokeWidth={1.5} />
-            {mounted && wishlistCount > 0 && (
+            {hydrated && wishlistCount > 0 && (
               <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-foreground px-1 text-[10px] font-medium text-background">
                 {wishlistCount}
               </span>
             )}
           </Link>
           <Link
-            to={accessToken ? "/account" : "/login"}
+            to={hydrated && accessToken ? "/account" : "/login"}
             aria-label="Account"
             className="grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
           >
@@ -208,7 +208,7 @@ export function Header() {
             className="relative grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
           >
             <ShoppingBag className="h-5 w-5" strokeWidth={1.5} />
-            {mounted && totalItems > 0 && (
+            {hydrated && totalItems > 0 && (
               <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-bloom px-1 text-[10px] font-medium text-accent-foreground">
                 {totalItems}
               </span>
@@ -261,11 +261,11 @@ export function Header() {
               Wishlist
             </Link>
             <Link
-              to={accessToken ? "/account" : "/login"}
+              to={hydrated && accessToken ? "/account" : "/login"}
               onClick={() => setMobileOpen(false)}
               className="font-display text-4xl italic tracking-tight"
             >
-              {accessToken ? "Account" : "Sign in"}
+              {hydrated && accessToken ? "Account" : "Sign in"}
             </Link>
           <div className="mt-6 grid grid-cols-2 gap-2 border-t border-border pt-6">
             {collections

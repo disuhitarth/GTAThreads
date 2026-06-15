@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { ssrSafeStorage } from "@/lib/ssrSafeStorage";
 
 export interface RecentProduct {
   id: string;
@@ -27,7 +28,7 @@ export const useRecentlyViewedStore = create<RecentlyViewedStore>()(
     }),
     {
       name: "gta-threads-recent",
-      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
+      storage: createJSONStorage(ssrSafeStorage),
     },
   ),
 );

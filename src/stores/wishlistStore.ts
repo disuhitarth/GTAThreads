@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist, createJSONStorage } from "zustand/middleware";
+import { ssrSafeStorage } from "@/lib/ssrSafeStorage";
 
 export interface WishlistItem {
   id: string;
@@ -35,7 +36,7 @@ export const useWishlistStore = create<WishlistStore>()(
     }),
     {
       name: "gta-threads-wishlist",
-      storage: createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!),
+      storage: createJSONStorage(ssrSafeStorage),
     },
   ),
 );
