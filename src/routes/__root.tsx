@@ -188,10 +188,13 @@ function AppShell() {
   useCartSync();
   return (
     <div className="relative min-h-screen bg-background">
+      <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-foreground focus:px-4 focus:py-2 focus:text-sm focus:text-background">
+        Skip to main content
+      </a>
       <Suspense fallback={null}><Grain /></Suspense>
       <Suspense fallback={null}><FlowerCursor /></Suspense>
       <Header />
-      <main className="animate-fade-in">
+      <main id="main-content" className="animate-fade-in">
         <Outlet />
       </main>
       <Footer />

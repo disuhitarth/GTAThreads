@@ -97,7 +97,7 @@ export function Header() {
           <Logo />
         </Link>
 
-        <nav className="hidden items-center gap-7 lg:flex">
+        <nav aria-label="Main" className="hidden items-center gap-7 lg:flex">
           {NAV.map((item) =>
             item.hasDropdown ? (
               <div
@@ -208,6 +208,7 @@ export function Header() {
 
       {/* Mobile menu */}
       <div
+        inert={!mobileOpen ? "" : undefined}
         className={cn(
           "fixed inset-0 z-[60] bg-background transition-transform duration-300 lg:hidden",
           mobileOpen ? "translate-x-0" : "translate-x-full",
@@ -223,7 +224,7 @@ export function Header() {
             <X className="h-5 w-5" strokeWidth={1.5} />
           </button>
         </div>
-        <nav className="flex flex-col gap-1 px-6 pt-8">
+        <nav aria-label="Mobile" className="flex flex-col gap-1 px-6 pt-8">
           {NAV.map((item) => (
             <Link
               key={item.to}

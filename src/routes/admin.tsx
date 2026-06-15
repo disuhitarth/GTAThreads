@@ -65,13 +65,14 @@ function LoginForm({ onLogin }: { onLogin: () => void }) {
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="password"
+            aria-label="Admin password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             autoFocus
             className="w-full rounded-xl border border-border bg-transparent px-4 py-3 text-sm focus:border-bloom focus:outline-none"
           />
-          {error && <p className="text-sm text-red-500">{error}</p>}
+          {error && <p role="alert" className="text-sm text-red-500">{error}</p>}
           <button
             type="submit"
             className="w-full rounded-full bg-foreground px-6 py-3 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom"
@@ -120,7 +121,7 @@ function AdminLayout() {
           <Shield className="h-6 w-6 text-bloom" />
           <span className="font-display text-lg italic">Admin</span>
         </Link>
-        <nav className="flex-1 space-y-1">
+        <nav aria-label="Admin" className="flex-1 space-y-1">
           {NAV_ITEMS.map((item) => {
             const active = item.exact
               ? currentPath === "/admin"

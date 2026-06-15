@@ -33,13 +33,14 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
   if (!open) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-sm">
+    <div role="dialog" aria-modal="true" aria-label="Search products" className="fixed inset-0 z-50 flex flex-col bg-background/95 backdrop-blur-sm">
       <div className="mx-auto w-full max-w-2xl px-5 pt-20 sm:pt-28">
         <div className="relative">
           <Search className="pointer-events-none absolute left-5 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
           <input
             ref={inputRef}
             type="text"
+            aria-label="Search products"
             placeholder="Search products..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
@@ -47,6 +48,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
           />
           <button
             onClick={onClose}
+            aria-label="Close search"
             className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl p-3 text-muted-foreground hover:text-foreground"
           >
             <X className="h-5 w-5" />

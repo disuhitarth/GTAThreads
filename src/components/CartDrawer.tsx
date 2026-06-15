@@ -93,7 +93,7 @@ export function CartDrawer() {
                             >
                               <Minus className="h-3.5 w-3.5" />
                             </button>
-                            <span className="w-10 text-center text-sm">{item.quantity}</span>
+                            <span aria-live="polite" aria-atomic="true" className="w-10 text-center text-sm">{item.quantity}</span>
                             <button
                               aria-label="Increase"
                               className="grid h-11 w-11 place-items-center hover:bg-secondary/60"

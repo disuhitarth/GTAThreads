@@ -129,6 +129,7 @@ function CustomOrders() {
           </p>
           <input
             type="range"
+            aria-label="Quantity"
             min={5}
             max={500}
             step={5}
@@ -179,6 +180,7 @@ function CustomOrders() {
       valid: true,
       content: (
         <textarea
+          aria-label="Notes about your order"
           value={form.notes}
           onChange={(e) => set("notes", e.target.value.slice(0, 1000))}
           rows={6}
@@ -315,10 +317,11 @@ function CustomOrders() {
         </div>
 
         {/* progress */}
-        <div className="mt-12 flex items-center justify-center gap-1.5">
+        <div className="mt-12 flex items-center justify-center gap-1.5" role="progressbar" aria-valuenow={step + 1} aria-valuemin={1} aria-valuemax={steps.length} aria-label="Order progress">
           {steps.map((_, i) => (
             <span
               key={i}
+              aria-label={`Step ${i + 1}${i === step ? ', current' : i < step ? ', completed' : ''}`}
               className={`h-1.5 rounded-full transition-all ${
                 i === step ? "w-10 bg-bloom" : i < step ? "w-6 bg-bloom/60" : "w-6 bg-border"
               }`}
@@ -393,6 +396,7 @@ function ChipGrid({
         <button
           key={o}
           onClick={() => onChange(o)}
+          aria-pressed={value === o}
           className={`rounded-full border px-5 py-3 text-sm transition-all ${
             value === o
               ? "border-bloom bg-bloom/15 text-bloom"
