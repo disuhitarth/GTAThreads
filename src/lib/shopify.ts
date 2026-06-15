@@ -434,6 +434,14 @@ const CUSTOMER_QUERY = `
   }
 `;
 
+const CUSTOMER_RECOVER_MUTATION = `
+  mutation customerRecover($email: String!) {
+    customerRecover(email: $email) {
+      customerUserErrors { field message code }
+    }
+  }
+`;
+
 export async function customerRegister(input: {
   email: string;
   password: string;
@@ -478,6 +486,21 @@ export async function customerLogin(input: {
     return { success: false, error: "Invalid email or password" };
   }
   return { success: true, accessToken: token.accessToken, expiresAt: token.expiresAt };
+}
+
+export async function customerRecover(
+  email: string,
+): Promise<{ success: true } | { success: false; error: string }> {
+  const res = await storefrontApiRequest<{
+    customerRecover: {
+      customerUserErrors: Array<{ field: string[] | null; message: string; code: string }>;
+    };
+  }>(CUSTOMER_RECOVER_MUTATION, { email });
+  const errors = res?.data?.customerRecover?.customerUserErrors;
+  if (errors?.length) {
+    return { success: false, error: errors.map((e) => e.message).join(", ") };
+  }
+  return { success: true };
 }
 
 export async function customerLogout(

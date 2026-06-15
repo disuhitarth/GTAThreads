@@ -15,6 +15,7 @@ import { Route as SizeGuideRouteImport } from './routes/size-guide'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ShippingReturnsRouteImport } from './routes/shipping-returns'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OccasionsRouteImport } from './routes/occasions'
@@ -70,6 +71,11 @@ const ShopRoute = ShopRouteImport.update({
 const ShippingReturnsRoute = ShippingReturnsRouteImport.update({
   id: '/shipping-returns',
   path: '/shipping-returns',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -218,6 +224,7 @@ export interface FileRoutesByFullPath {
   '/occasions': typeof OccasionsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -248,6 +255,7 @@ export interface FileRoutesByTo {
   '/lookbook': typeof LookbookRoute
   '/privacy': typeof PrivacyRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -283,6 +291,7 @@ export interface FileRoutesById {
   '/occasions': typeof OccasionsRouteWithChildren
   '/privacy': typeof PrivacyRoute
   '/register': typeof RegisterRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -319,6 +328,7 @@ export interface FileRouteTypes {
     | '/occasions'
     | '/privacy'
     | '/register'
+    | '/reset-password'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
@@ -349,6 +359,7 @@ export interface FileRouteTypes {
     | '/lookbook'
     | '/privacy'
     | '/register'
+    | '/reset-password'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
@@ -383,6 +394,7 @@ export interface FileRouteTypes {
     | '/occasions'
     | '/privacy'
     | '/register'
+    | '/reset-password'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
@@ -418,6 +430,7 @@ export interface RootRouteChildren {
   OccasionsRoute: typeof OccasionsRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
   RegisterRoute: typeof RegisterRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   ShippingReturnsRoute: typeof ShippingReturnsRoute
   ShopRoute: typeof ShopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -471,6 +484,13 @@ declare module '@tanstack/react-router' {
       path: '/shipping-returns'
       fullPath: '/shipping-returns'
       preLoaderRoute: typeof ShippingReturnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -728,6 +748,7 @@ const rootRouteChildren: RootRouteChildren = {
   OccasionsRoute: OccasionsRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
   RegisterRoute: RegisterRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   ShippingReturnsRoute: ShippingReturnsRoute,
   ShopRoute: ShopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

@@ -81,7 +81,17 @@ export function Header() {
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "/" && !["INPUT", "TEXTAREA"].includes((e.target as HTMLElement).tagName)) {
+        e.preventDefault();
+        setSearchOpen(true);
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("keydown", onKeyDown);
+    };
   }, []);
 
   return (
@@ -161,7 +171,15 @@ export function Header() {
           <button
             aria-label="Search products"
             onClick={() => setSearchOpen(true)}
-            className="grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
+            className="relative grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom max-lg:hidden"
+          >
+            <Search className="h-5 w-5" strokeWidth={1.5} />
+            <kbd className="absolute -bottom-0.5 right-0.5 hidden rounded border border-border bg-background px-1 text-[9px] text-muted-foreground md:block">/</kbd>
+          </button>
+          <button
+            aria-label="Search products"
+            onClick={() => setSearchOpen(true)}
+            className="grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom lg:hidden"
           >
             <Search className="h-5 w-5" strokeWidth={1.5} />
           </button>

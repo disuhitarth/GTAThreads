@@ -79,6 +79,12 @@ export default function LoginPage() {
           >
             {isPending ? "Signing in…" : "Sign in"}
           </button>
+
+          <div className="flex items-center justify-between text-sm text-muted-foreground">
+            <Link to="/reset-password" className="underline hover:text-bloom">
+              Forgot password?
+            </Link>
+          </div>
         </form>
 
         <p className="mt-6 text-center text-sm text-muted-foreground">
