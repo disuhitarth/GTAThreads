@@ -359,6 +359,182 @@ export async function fetchCartTotalQuantity(cartId: string): Promise<number | n
   return data?.data?.cart?.totalQuantity ?? 0;
 }
 
+// ------- Customer Auth -------
+
+export interface Customer {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+  phone: string | null;
+  defaultAddress: {
+    address1: string | null;
+    city: string | null;
+    province: string | null;
+    country: string | null;
+    zip: string | null;
+  } | null;
+  orders: Array<{
+    id: string;
+    name: string;
+    orderNumber: number;
+    processedAt: string;
+    financialStatus: string | null;
+    fulfillmentStatus: string | null;
+    totalPrice: { amount: string; currencyCode: string };
+    lineItems: Array<{ title: string; quantity: number; variantTitle: string | null }>;
+  }>;
+}
+
+const CUSTOMER_CREATE_MUTATION = `
+  mutation customerCreate($input: CustomerCreateInput!) {
+    customerCreate(input: $input) {
+      customer { id firstName lastName email }
+      customerUserErrors { field message code }
+    }
+  }
+`;
+
+const CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION = `
+  mutation customerAccessTokenCreate($input: CustomerAccessTokenCreateInput!) {
+    customerAccessTokenCreate(input: $input) {
+      customerAccessToken { accessToken expiresAt }
+      customerUserErrors { field message code }
+    }
+  }
+`;
+
+const CUSTOMER_ACCESS_TOKEN_DELETE_MUTATION = `
+  mutation customerAccessTokenDelete($customerAccessToken: String!) {
+    customerAccessTokenDelete(customerAccessToken: $customerAccessToken) {
+      deletedAccessToken
+      deletedCustomerAccessTokenId
+      userErrors { field message }
+    }
+  }
+`;
+
+const CUSTOMER_QUERY = `
+  query customer($customerAccessToken: String!) {
+    customer(customerAccessToken: $customerAccessToken) {
+      id firstName lastName email phone
+      defaultAddress { address1 city province country zip }
+      orders(first: 20) {
+        edges { node {
+          id name orderNumber processedAt financialStatus fulfillmentStatus
+          totalPrice { amount currencyCode }
+          lineItems(first: 10) {
+            edges { node { title quantity variantTitle } }
+          }
+        } }
+      }
+    }
+  }
+`;
+
+export async function customerRegister(input: {
+  email: string;
+  password: string;
+  firstName?: string;
+  lastName?: string;
+}): Promise<{ success: true; customer: { id: string } } | { success: false; error: string }> {
+  const res = await storefrontApiRequest<{
+    customerCreate: {
+      customer: { id: string } | null;
+      customerUserErrors: Array<{ field: string[] | null; message: string; code: string }>;
+    };
+  }>(CUSTOMER_CREATE_MUTATION, { input });
+  const errors = res?.data?.customerCreate?.customerUserErrors;
+  if (errors?.length) {
+    return { success: false, error: errors.map((e) => e.message).join(", ") };
+  }
+  if (!res?.data?.customerCreate?.customer) {
+    return { success: false, error: "Failed to create account" };
+  }
+  return { success: true, customer: res.data.customerCreate.customer };
+}
+
+export async function customerLogin(input: {
+  email: string;
+  password: string;
+}): Promise<
+  | { success: true; accessToken: string; expiresAt: string }
+  | { success: false; error: string }
+> {
+  const res = await storefrontApiRequest<{
+    customerAccessTokenCreate: {
+      customerAccessToken: { accessToken: string; expiresAt: string } | null;
+      customerUserErrors: Array<{ field: string[] | null; message: string; code: string }>;
+    };
+  }>(CUSTOMER_ACCESS_TOKEN_CREATE_MUTATION, { input });
+  const errors = res?.data?.customerAccessTokenCreate?.customerUserErrors;
+  if (errors?.length) {
+    return { success: false, error: errors.map((e) => e.message).join(", ") };
+  }
+  const token = res?.data?.customerAccessTokenCreate?.customerAccessToken;
+  if (!token) {
+    return { success: false, error: "Invalid email or password" };
+  }
+  return { success: true, accessToken: token.accessToken, expiresAt: token.expiresAt };
+}
+
+export async function customerLogout(
+  accessToken: string,
+): Promise<{ success: boolean }> {
+  await storefrontApiRequest<{
+    customerAccessTokenDelete: { deletedAccessToken: string; userErrors: Array<{ field: string[] | null; message: string }> };
+  }>(CUSTOMER_ACCESS_TOKEN_DELETE_MUTATION, { customerAccessToken: accessToken });
+  return { success: true };
+}
+
+interface CustomerGraphQLNode {
+  id: string;
+  firstName: string | null;
+  lastName: string | null;
+  email: string;
+  phone: string | null;
+  defaultAddress: Customer['defaultAddress'];
+  orders: {
+    edges: Array<{
+      node: {
+        id: string;
+        name: string;
+        orderNumber: number;
+        processedAt: string;
+        financialStatus: string | null;
+        fulfillmentStatus: string | null;
+        totalPrice: { amount: string; currencyCode: string };
+        lineItems: {
+          edges: Array<{ node: { title: string; quantity: number; variantTitle: string | null } }>;
+        };
+      };
+    }>;
+  };
+}
+
+export async function getCustomer(
+  accessToken: string,
+): Promise<Customer | null> {
+  const res = await storefrontApiRequest<{ customer: CustomerGraphQLNode | null }>(
+    CUSTOMER_QUERY,
+    { customerAccessToken: accessToken },
+  );
+  const raw = res?.data?.customer;
+  if (!raw) return null;
+  return {
+    id: raw.id,
+    firstName: raw.firstName,
+    lastName: raw.lastName,
+    email: raw.email,
+    phone: raw.phone,
+    defaultAddress: raw.defaultAddress,
+    orders: raw.orders.edges.map((e) => ({
+      ...e.node,
+      lineItems: e.node.lineItems.edges.map((li) => li.node),
+    })),
+  };
+}
+
 export function formatPrice(amount: string | number, currency = "CAD") {
   const n = typeof amount === "string" ? parseFloat(amount) : amount;
   return new Intl.NumberFormat("en-CA", {

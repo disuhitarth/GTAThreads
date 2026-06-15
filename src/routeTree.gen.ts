@@ -15,15 +15,18 @@ import { Route as SizeGuideRouteImport } from './routes/size-guide'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ShippingReturnsRouteImport } from './routes/shipping-returns'
+import { Route as RegisterRouteImport } from './routes/register'
 import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OccasionsRouteImport } from './routes/occasions'
 import { Route as LookbookRouteImport } from './routes/lookbook'
+import { Route as LoginRouteImport } from './routes/login'
 import { Route as JournalRouteImport } from './routes/journal'
 import { Route as GiftFinderRouteImport } from './routes/gift-finder'
 import { Route as CustomOrdersRouteImport } from './routes/custom-orders'
 import { Route as CategoryRouteImport } from './routes/category'
 import { Route as CareRouteImport } from './routes/care'
 import { Route as AdminRouteImport } from './routes/admin'
+import { Route as AccountRouteImport } from './routes/account'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as OccasionsIndexRouteImport } from './routes/occasions.index'
@@ -69,6 +72,11 @@ const ShippingReturnsRoute = ShippingReturnsRouteImport.update({
   path: '/shipping-returns',
   getParentRoute: () => rootRouteImport,
 } as any)
+const RegisterRoute = RegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivacyRoute = PrivacyRouteImport.update({
   id: '/privacy',
   path: '/privacy',
@@ -82,6 +90,11 @@ const OccasionsRoute = OccasionsRouteImport.update({
 const LookbookRoute = LookbookRouteImport.update({
   id: '/lookbook',
   path: '/lookbook',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JournalRoute = JournalRouteImport.update({
@@ -112,6 +125,11 @@ const CareRoute = CareRouteImport.update({
 const AdminRoute = AdminRouteImport.update({
   id: '/admin',
   path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AccountRoute = AccountRouteImport.update({
+  id: '/account',
+  path: '/account',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AboutRoute = AboutRouteImport.update({
@@ -188,15 +206,18 @@ const AdminOrdersRoute = AdminOrdersRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/admin': typeof AdminRouteWithChildren
   '/care': typeof CareRoute
   '/category': typeof CategoryRouteWithChildren
   '/custom-orders': typeof CustomOrdersRoute
   '/gift-finder': typeof GiftFinderRoute
   '/journal': typeof JournalRouteWithChildren
+  '/login': typeof LoginRoute
   '/lookbook': typeof LookbookRoute
   '/occasions': typeof OccasionsRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/register': typeof RegisterRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -219,11 +240,14 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/care': typeof CareRoute
   '/custom-orders': typeof CustomOrdersRoute
   '/gift-finder': typeof GiftFinderRoute
+  '/login': typeof LoginRoute
   '/lookbook': typeof LookbookRoute
   '/privacy': typeof PrivacyRoute
+  '/register': typeof RegisterRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -247,15 +271,18 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/account': typeof AccountRoute
   '/admin': typeof AdminRouteWithChildren
   '/care': typeof CareRoute
   '/category': typeof CategoryRouteWithChildren
   '/custom-orders': typeof CustomOrdersRoute
   '/gift-finder': typeof GiftFinderRoute
   '/journal': typeof JournalRouteWithChildren
+  '/login': typeof LoginRoute
   '/lookbook': typeof LookbookRoute
   '/occasions': typeof OccasionsRouteWithChildren
   '/privacy': typeof PrivacyRoute
+  '/register': typeof RegisterRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
@@ -280,15 +307,18 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/account'
     | '/admin'
     | '/care'
     | '/category'
     | '/custom-orders'
     | '/gift-finder'
     | '/journal'
+    | '/login'
     | '/lookbook'
     | '/occasions'
     | '/privacy'
+    | '/register'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
@@ -311,11 +341,14 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/about'
+    | '/account'
     | '/care'
     | '/custom-orders'
     | '/gift-finder'
+    | '/login'
     | '/lookbook'
     | '/privacy'
+    | '/register'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
@@ -338,15 +371,18 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/about'
+    | '/account'
     | '/admin'
     | '/care'
     | '/category'
     | '/custom-orders'
     | '/gift-finder'
     | '/journal'
+    | '/login'
     | '/lookbook'
     | '/occasions'
     | '/privacy'
+    | '/register'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
@@ -370,15 +406,18 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AccountRoute: typeof AccountRoute
   AdminRoute: typeof AdminRouteWithChildren
   CareRoute: typeof CareRoute
   CategoryRoute: typeof CategoryRouteWithChildren
   CustomOrdersRoute: typeof CustomOrdersRoute
   GiftFinderRoute: typeof GiftFinderRoute
   JournalRoute: typeof JournalRouteWithChildren
+  LoginRoute: typeof LoginRoute
   LookbookRoute: typeof LookbookRoute
   OccasionsRoute: typeof OccasionsRouteWithChildren
   PrivacyRoute: typeof PrivacyRoute
+  RegisterRoute: typeof RegisterRoute
   ShippingReturnsRoute: typeof ShippingReturnsRoute
   ShopRoute: typeof ShopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
@@ -434,6 +473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShippingReturnsRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/register': {
+      id: '/register'
+      path: '/register'
+      fullPath: '/register'
+      preLoaderRoute: typeof RegisterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/privacy': {
       id: '/privacy'
       path: '/privacy'
@@ -453,6 +499,13 @@ declare module '@tanstack/react-router' {
       path: '/lookbook'
       fullPath: '/lookbook'
       preLoaderRoute: typeof LookbookRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/journal': {
@@ -495,6 +548,13 @@ declare module '@tanstack/react-router' {
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/account': {
+      id: '/account'
+      path: '/account'
+      fullPath: '/account'
+      preLoaderRoute: typeof AccountRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/about': {
@@ -656,15 +716,18 @@ const OccasionsRouteWithChildren = OccasionsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AccountRoute: AccountRoute,
   AdminRoute: AdminRouteWithChildren,
   CareRoute: CareRoute,
   CategoryRoute: CategoryRouteWithChildren,
   CustomOrdersRoute: CustomOrdersRoute,
   GiftFinderRoute: GiftFinderRoute,
   JournalRoute: JournalRouteWithChildren,
+  LoginRoute: LoginRoute,
   LookbookRoute: LookbookRoute,
   OccasionsRoute: OccasionsRouteWithChildren,
   PrivacyRoute: PrivacyRoute,
+  RegisterRoute: RegisterRoute,
   ShippingReturnsRoute: ShippingReturnsRoute,
   ShopRoute: ShopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,

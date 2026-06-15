@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { ChevronDown, Heart, Menu, Search, ShoppingBag, X } from "lucide-react";
+import { ChevronDown, Heart, Menu, Search, ShoppingBag, User, X } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Logo } from "@/components/brand/Logo";
 import { CategoryIcon } from "@/components/CategoryIcon";
 import { SearchOverlay } from "@/components/SearchOverlay";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
+import { useAuthStore } from "@/stores/authStore";
 import { cn } from "@/lib/utils";
 import { OCCASIONS } from "@/lib/occasions";
 import { CATEGORIES } from "@/lib/categories";
@@ -66,6 +67,7 @@ export function Header() {
 
   const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
   const wishlistCount = useWishlistStore((s) => s.items.length);
+  const accessToken = useAuthStore((s) => s.accessToken);
   const setOpen = useCartStore((s) => s.setOpen);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -75,6 +77,7 @@ export function Header() {
 
   useEffect(() => {
     setMounted(true);
+    useAuthStore.getState().hydrate();
     const onScroll = () => setScrolled(window.scrollY > 12);
     onScroll();
     window.addEventListener("scroll", onScroll, { passive: true });
@@ -174,6 +177,13 @@ export function Header() {
               </span>
             )}
           </Link>
+          <Link
+            to={accessToken ? "/account" : "/login"}
+            aria-label="Account"
+            className="grid h-11 w-11 place-items-center text-foreground transition-colors hover:text-bloom"
+          >
+            <User className="h-5 w-5" strokeWidth={1.5} />
+          </Link>
           <button
             aria-label="Open cart"
             onClick={() => setOpen(true)}
@@ -230,6 +240,13 @@ export function Header() {
               className="font-display text-4xl italic tracking-tight text-bloom"
             >
               Wishlist
+            </Link>
+            <Link
+              to={accessToken ? "/account" : "/login"}
+              onClick={() => setMobileOpen(false)}
+              className="font-display text-4xl italic tracking-tight"
+            >
+              {accessToken ? "Account" : "Sign in"}
             </Link>
           <div className="mt-6 grid grid-cols-2 gap-2 border-t border-border pt-6">
             {collections
