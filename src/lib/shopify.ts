@@ -188,6 +188,17 @@ export async function fetchCollectionByHandle(
   return res?.data?.collection ?? null;
 }
 
+export async function fetchRelatedProducts(
+  collectionHandle: string,
+  excludeId: string,
+  max = 4,
+): Promise<ShopifyProduct[]> {
+  if (!collectionHandle) return [];
+  const collection = await fetchCollectionByHandle(collectionHandle);
+  const all = collection?.products?.edges ?? [];
+  return all.filter((e) => e.node.id !== excludeId).slice(0, max);
+}
+
 // ------- Cart -------
 
 const CART_QUERY = `query cart($id: ID!) { cart(id: $id) { id totalQuantity } }`;

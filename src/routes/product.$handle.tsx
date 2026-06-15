@@ -2,7 +2,8 @@ import { useState, Suspense } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { ArrowLeft, Heart, Loader2, Share2, X } from "lucide-react";
-import { fetchProductByHandle, formatPrice } from "@/lib/shopify";
+import { fetchProductByHandle, fetchRelatedProducts, formatPrice } from "@/lib/shopify";
+import { ProductCard } from "@/components/ProductCard";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
 import { useRecentlyViewedStore } from "@/stores/recentlyViewedStore";
@@ -19,6 +20,12 @@ const productQueryOptions = (handle: string) => ({
   staleTime: 1000 * 60 * 5,
 });
 
+const relatedQueryOptions = (collectionHandle: string, excludeId: string) => ({
+  queryKey: ["related-products", collectionHandle || "none", excludeId],
+  queryFn: () => fetchRelatedProducts(collectionHandle, excludeId),
+  staleTime: 1000 * 60 * 5,
+});
+
 import { SITE_URL } from "@/lib/env";
 const SITE = SITE_URL;
 
@@ -27,7 +34,11 @@ export const Route = createFileRoute("/product/$handle")({
     const product = await context.queryClient
       .ensureQueryData(productQueryOptions(params.handle))
       .catch(() => null);
-    return { product };
+    if (product?.collections?.edges?.[0]) {
+      await context.queryClient.ensureQueryData(
+        relatedQueryOptions(product.collections.edges[0].node.handle, product.id),
+      );
+    }
   },
   head: ({ params, loaderData }) => {
     const p = loaderData?.product;
@@ -202,6 +213,9 @@ function ProductInner() {
       image: primary ? { url: primary.url, altText: primary.altText ?? undefined } : undefined,
     });
   }, [product.id]);
+
+  const collection = product.collections.edges[0]?.node;
+  const { data: related } = useSuspenseQuery(relatedQueryOptions(collection?.handle ?? "", product.id));
 
   const onShare = async () => {
     const url = `${SITE_URL}/product/${product.handle}`;
@@ -391,6 +405,21 @@ function ProductInner() {
     </section>
 
     <RecentViewSection />
+
+    {collection && related && related.length > 0 && (
+      <section className="bg-background px-5 pb-24 sm:px-8">
+        <div className="mx-auto max-w-[1500px]">
+          <h2 className="font-display text-3xl italic tracking-tight sm:text-4xl">
+            More from {collection.title}
+          </h2>
+          <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4">
+            {related.map((p) => (
+              <ProductCard key={p.node.id} product={p} />
+            ))}
+          </div>
+        </div>
+      </section>
+    )}
     </>
   );
 }
