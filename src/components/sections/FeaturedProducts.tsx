@@ -35,11 +35,7 @@ export function FeaturedProducts() {
   }, [products.length]);
 
   return (
-    <section
-      ref={root}
-      id="shop"
-      className="bg-background px-6 py-20 sm:px-8 sm:py-24 lg:py-32"
-    >
+    <section ref={root} id="shop" className="bg-background px-6 py-20 sm:px-8 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-[1600px]">
         <div className="reveal flex flex-col gap-6 sm:flex-row sm:items-end sm:justify-between">
           <div>

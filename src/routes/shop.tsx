@@ -32,7 +32,7 @@ const SORTS: { value: Sort; label: string }[] = [
 export const Route = createFileRoute("/shop")({
   validateSearch: (raw: Record<string, unknown>): ShopSearch => {
     const sort = (raw.sort as Sort) || "featured";
-    
+
     // Resolve legacy category/occasion parameters to collection
     let collection = typeof raw.collection === "string" ? raw.collection : undefined;
     if (!collection) {
@@ -47,17 +47,34 @@ export const Route = createFileRoute("/shop")({
       collection,
       size: typeof raw.size === "string" ? raw.size : undefined,
       color: typeof raw.color === "string" ? raw.color : undefined,
-      min: typeof raw.min === "string" ? parseFloat(raw.min) : typeof raw.min === "number" ? raw.min : undefined,
-      max: typeof raw.max === "string" ? parseFloat(raw.max) : typeof raw.max === "number" ? raw.max : undefined,
+      min:
+        typeof raw.min === "string"
+          ? parseFloat(raw.min)
+          : typeof raw.min === "number"
+            ? raw.min
+            : undefined,
+      max:
+        typeof raw.max === "string"
+          ? parseFloat(raw.max)
+          : typeof raw.max === "number"
+            ? raw.max
+            : undefined,
       sort: SORTS.find((s) => s.value === sort)?.value ?? "featured",
     };
   },
   head: () => ({
     meta: [
       { title: "Shop — GTA Threads" },
-      { name: "description", content: "Filter the full collection of hand-embroidered tees, hoodies, hats, accessories, and gifts. Stitched in Toronto." },
+      {
+        name: "description",
+        content:
+          "Filter the full collection of hand-embroidered tees, hoodies, hats, accessories, and gifts. Stitched in Toronto.",
+      },
       { property: "og:title", content: "Shop — GTA Threads" },
-      { property: "og:description", content: "Embroidered sweatshirts, tees, totes and baby pieces from Toronto." },
+      {
+        property: "og:description",
+        content: "Embroidered sweatshirts, tees, totes and baby pieces from Toronto.",
+      },
       { property: "og:url", content: "/shop" },
     ],
     links: [{ rel: "canonical", href: "/shop" }],
@@ -66,6 +83,20 @@ export const Route = createFileRoute("/shop")({
     context.queryClient.ensureQueryData(productsQueryOptions(60));
   },
   component: ShopPage,
+  errorComponent: ({ error, reset }) => (
+    <div className="grid min-h-[60vh] place-items-center px-5 text-center">
+      <div>
+        <h1 className="font-display text-3xl italic">A loose thread.</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+        <button
+          onClick={reset}
+          className="mt-6 rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom"
+        >
+          Retry
+        </button>
+      </div>
+    </div>
+  ),
 });
 
 interface DropdownProps {
@@ -77,7 +108,14 @@ interface DropdownProps {
   children: React.ReactNode;
 }
 
-function Dropdown({ label, activeLabel, isOpen, onToggle, alignRight = false, children }: DropdownProps) {
+function Dropdown({
+  label,
+  activeLabel,
+  isOpen,
+  onToggle,
+  alignRight = false,
+  children,
+}: DropdownProps) {
   return (
     <div className="relative">
       <button
@@ -89,7 +127,9 @@ function Dropdown({ label, activeLabel, isOpen, onToggle, alignRight = false, ch
         }`}
       >
         <span>{activeLabel ? `${label}: ${activeLabel}` : label}</span>
-        <ChevronDown className={`h-3 w-3 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`} />
+        <ChevronDown
+          className={`h-3 w-3 transition-transform duration-300 ${isOpen ? "rotate-180" : ""}`}
+        />
       </button>
       {isOpen && (
         <div
@@ -107,7 +147,9 @@ function Dropdown({ label, activeLabel, isOpen, onToggle, alignRight = false, ch
 function ShopPage() {
   const search = Route.useSearch();
   const navigate = useNavigate({ from: "/shop" });
-  const [openDropdown, setOpenDropdown] = useState<"collection" | "size" | "price" | "sort" | null>(null);
+  const [openDropdown, setOpenDropdown] = useState<"collection" | "size" | "price" | "sort" | null>(
+    null,
+  );
 
   const { data: collections = [] } = useQuery({
     queryKey: ["collections"],
@@ -127,9 +169,9 @@ function ShopPage() {
   const activeCollection = collections.find((c) => c.handle === search.collection);
   const activeCollectionLabel = activeCollection
     ? activeCollection.title
-    : (CATEGORIES.find((c) => c.slug === search.collection)?.title ||
-       OCCASIONS.find((o) => o.slug === search.collection)?.title ||
-       search.collection);
+    : CATEGORIES.find((c) => c.slug === search.collection)?.title ||
+      OCCASIONS.find((o) => o.slug === search.collection)?.title ||
+      search.collection;
 
   const activeChips: { label: string; clear: () => void }[] = [];
   if (search.collection) {
@@ -158,17 +200,19 @@ function ShopPage() {
 
   // Page title dynamically updates based on the selected collection
   const pageTitle = activeCollectionLabel ? (
-    <>Shop the <span className="italic text-bloom">{activeCollectionLabel}</span> collection.</>
+    <>
+      Shop the <span className="italic text-bloom">{activeCollectionLabel}</span> collection.
+    </>
   ) : (
-    <>Shop the <span className="italic text-bloom">collection.</span></>
+    <>
+      Shop the <span className="italic text-bloom">collection.</span>
+    </>
   );
 
   return (
     <section className="bg-background px-5 pb-24 pt-32 sm:px-8 sm:pt-40">
       {/* Background click overlay to close dropdowns */}
-      {openDropdown && (
-        <div className="fixed inset-0 z-10" onClick={() => setOpenDropdown(null)} />
-      )}
+      {openDropdown && <div className="fixed inset-0 z-10" onClick={() => setOpenDropdown(null)} />}
 
       <div className="mx-auto max-w-[1600px]">
         <div className="text-center">
@@ -184,7 +228,9 @@ function ShopPage() {
             <div className="flex flex-wrap items-center gap-2 sm:gap-3">
               <div className="flex items-center gap-2 mr-2">
                 <SlidersHorizontal className="h-4 w-4 text-bloom" />
-                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground hidden sm:block">Filters</p>
+                <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground hidden sm:block">
+                  Filters
+                </p>
               </div>
 
               {/* Collections Dropdown */}
@@ -192,7 +238,9 @@ function ShopPage() {
                 label="Collection"
                 activeLabel={activeCollectionLabel}
                 isOpen={openDropdown === "collection"}
-                onToggle={() => setOpenDropdown(openDropdown === "collection" ? null : "collection")}
+                onToggle={() =>
+                  setOpenDropdown(openDropdown === "collection" ? null : "collection")
+                }
               >
                 <div className="max-h-64 overflow-y-auto space-y-0.5 p-1">
                   <button
@@ -268,8 +316,8 @@ function ShopPage() {
                     ? search.min != null && search.max != null
                       ? `$${search.min} - $${search.max}`
                       : search.min != null
-                      ? `Over $${search.min}`
-                      : `Under $${search.max}`
+                        ? `Over $${search.min}`
+                        : `Under $${search.max}`
                     : undefined
                 }
                 isOpen={openDropdown === "price"}
@@ -285,7 +333,9 @@ function ShopPage() {
                       className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-secondary/60 transition-colors cursor-pointer"
                     >
                       <span>All Prices</span>
-                      {search.min == null && search.max == null && <Check className="h-4 w-4 text-bloom" />}
+                      {search.min == null && search.max == null && (
+                        <Check className="h-4 w-4 text-bloom" />
+                      )}
                     </button>
                     <button
                       onClick={() => {
@@ -295,7 +345,9 @@ function ShopPage() {
                       className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-secondary/60 transition-colors cursor-pointer"
                     >
                       <span>Under $50</span>
-                      {search.min == null && search.max === 50 && <Check className="h-4 w-4 text-bloom" />}
+                      {search.min == null && search.max === 50 && (
+                        <Check className="h-4 w-4 text-bloom" />
+                      )}
                     </button>
                     <button
                       onClick={() => {
@@ -305,7 +357,9 @@ function ShopPage() {
                       className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-secondary/60 transition-colors cursor-pointer"
                     >
                       <span>$50 to $100</span>
-                      {search.min === 50 && search.max === 100 && <Check className="h-4 w-4 text-bloom" />}
+                      {search.min === 50 && search.max === 100 && (
+                        <Check className="h-4 w-4 text-bloom" />
+                      )}
                     </button>
                     <button
                       onClick={() => {
@@ -315,31 +369,43 @@ function ShopPage() {
                       className="flex w-full items-center justify-between rounded-xl px-3 py-2 text-left text-sm hover:bg-secondary/60 transition-colors cursor-pointer"
                     >
                       <span>Over $100</span>
-                      {search.min === 100 && search.max == null && <Check className="h-4 w-4 text-bloom" />}
+                      {search.min === 100 && search.max == null && (
+                        <Check className="h-4 w-4 text-bloom" />
+                      )}
                     </button>
                   </div>
 
                   <div className="border-t border-border/60 pt-2.5">
-                    <p className="px-3 pb-1.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground">Custom Range</p>
+                    <p className="px-3 pb-1.5 text-[10px] uppercase tracking-[0.15em] text-muted-foreground">
+                      Custom Range
+                    </p>
                     <div className="flex items-center gap-2 px-2">
                       <div className="relative flex-1">
-                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                          $
+                        </span>
                         <input
                           type="number"
                           placeholder="Min"
                           value={search.min ?? ""}
-                          onChange={(e) => update({ min: e.target.value ? parseFloat(e.target.value) : undefined })}
+                          onChange={(e) =>
+                            update({ min: e.target.value ? parseFloat(e.target.value) : undefined })
+                          }
                           className="w-full rounded-lg border border-border bg-background py-1.5 pl-6 pr-2 text-xs outline-none focus:border-bloom"
                         />
                       </div>
                       <span className="text-muted-foreground text-xs">—</span>
                       <div className="relative flex-1">
-                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">$</span>
+                        <span className="absolute left-2.5 top-1/2 -translate-y-1/2 text-xs text-muted-foreground">
+                          $
+                        </span>
                         <input
                           type="number"
                           placeholder="Max"
                           value={search.max ?? ""}
-                          onChange={(e) => update({ max: e.target.value ? parseFloat(e.target.value) : undefined })}
+                          onChange={(e) =>
+                            update({ max: e.target.value ? parseFloat(e.target.value) : undefined })
+                          }
                           className="w-full rounded-lg border border-border bg-background py-1.5 pl-6 pr-2 text-xs outline-none focus:border-bloom"
                         />
                       </div>
@@ -401,17 +467,19 @@ function ShopPage() {
 
         {/* Product Grid Area */}
         <div className="mt-8">
-          <Suspense fallback={
-            <div className="grid grid-cols-2 gap-x-5 gap-y-14 sm:gap-x-8 lg:grid-cols-4 mt-12">
-              {Array.from({ length: 8 }).map((_, i) => (
-                <div key={i} className="animate-pulse space-y-4">
-                  <div className="aspect-[4/5] rounded-3xl bg-secondary" />
-                  <div className="h-4 w-2/3 rounded bg-secondary" />
-                  <div className="h-4 w-1/3 rounded bg-secondary" />
-                </div>
-              ))}
-            </div>
-          }>
+          <Suspense
+            fallback={
+              <div className="grid grid-cols-2 gap-x-5 gap-y-14 sm:gap-x-8 lg:grid-cols-4 mt-12">
+                {Array.from({ length: 8 }).map((_, i) => (
+                  <div key={i} className="animate-pulse space-y-4">
+                    <div className="aspect-[4/5] rounded-3xl bg-secondary" />
+                    <div className="h-4 w-2/3 rounded bg-secondary" />
+                    <div className="h-4 w-1/3 rounded bg-secondary" />
+                  </div>
+                ))}
+              </div>
+            }
+          >
             <FilteredGrid search={search} />
           </Suspense>
         </div>
@@ -428,22 +496,22 @@ function FilteredGrid({ search }: { search: ShopSearch }) {
       // 1. Collection Filter (with dynamic collections & static categories/occasions fallback)
       if (search.collection) {
         const belongsToCollection = p.node.collections?.edges.some(
-          (edge) => edge.node.handle === search.collection
+          (edge) => edge.node.handle === search.collection,
         );
-        
+
         if (!belongsToCollection) {
           // Backward compatibility check for legacy categories/occasions
           const cat = CATEGORIES.find((c) => c.slug === search.collection);
           const occ = OCCASIONS.find((o) => o.slug === search.collection);
           const legacyQuery = cat?.query || occ?.query;
-          
+
           if (legacyQuery) {
             const haystack = [
               p.node.title.toLowerCase(),
               p.node.description.toLowerCase(),
               ...p.node.options.flatMap((o) => o.values.map((v) => v.toLowerCase())),
             ].join(" ");
-            
+
             const keywords = extractKeywords(legacyQuery);
             if (!keywords.some((k) => haystack.includes(k))) return false;
           } else {
@@ -455,7 +523,10 @@ function FilteredGrid({ search }: { search: ShopSearch }) {
       // 2. Size Filter
       if (search.size) {
         const sizeOpt = p.node.options.find((o) => o.name.toLowerCase().includes("size"));
-        if (sizeOpt && !sizeOpt.values.some((v) => v.toLowerCase() === search.size!.toLowerCase())) {
+        if (
+          sizeOpt &&
+          !sizeOpt.values.some((v) => v.toLowerCase() === search.size!.toLowerCase())
+        ) {
           return false;
         }
       }
@@ -464,23 +535,27 @@ function FilteredGrid({ search }: { search: ShopSearch }) {
       const price = parseFloat(p.node.priceRange.minVariantPrice.amount);
       if (search.min != null && price < search.min) return false;
       if (search.max != null && price > search.max) return false;
-      
+
       return true;
     };
 
     const arr = products.filter(matches);
-    
+
     // Sorting logic
     switch (search.sort) {
       case "price-asc":
-        arr.sort((a, b) =>
-          parseFloat(a.node.priceRange.minVariantPrice.amount) -
-          parseFloat(b.node.priceRange.minVariantPrice.amount));
+        arr.sort(
+          (a, b) =>
+            parseFloat(a.node.priceRange.minVariantPrice.amount) -
+            parseFloat(b.node.priceRange.minVariantPrice.amount),
+        );
         break;
       case "price-desc":
-        arr.sort((a, b) =>
-          parseFloat(b.node.priceRange.minVariantPrice.amount) -
-          parseFloat(a.node.priceRange.minVariantPrice.amount));
+        arr.sort(
+          (a, b) =>
+            parseFloat(b.node.priceRange.minVariantPrice.amount) -
+            parseFloat(a.node.priceRange.minVariantPrice.amount),
+        );
         break;
       case "az":
         arr.sort((a, b) => a.node.title.localeCompare(b.node.title));
@@ -496,8 +571,14 @@ function FilteredGrid({ search }: { search: ShopSearch }) {
     return (
       <div className="mt-12 rounded-3xl border border-dashed border-border bg-card/60 py-24 text-center">
         <p className="font-script text-2xl text-bloom">no matches in the garden</p>
-        <p className="mt-2 text-sm text-muted-foreground">Try removing a filter or browsing everything.</p>
-        <Link to="/shop" search={{ sort: "featured" }} className="mt-6 inline-block rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom">
+        <p className="mt-2 text-sm text-muted-foreground">
+          Try removing a filter or browsing everything.
+        </p>
+        <Link
+          to="/shop"
+          search={{ sort: "featured" }}
+          className="mt-6 inline-block rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom"
+        >
           Clear filters
         </Link>
       </div>
@@ -506,7 +587,9 @@ function FilteredGrid({ search }: { search: ShopSearch }) {
 
   return (
     <>
-      <p className="mt-2 text-xs uppercase tracking-[0.22em] text-muted-foreground">{filtered.length} pieces</p>
+      <p className="mt-2 text-xs uppercase tracking-[0.22em] text-muted-foreground">
+        {filtered.length} pieces
+      </p>
       <div className="mt-8 grid grid-cols-2 gap-x-5 gap-y-14 sm:gap-x-8 lg:grid-cols-3 xl:grid-cols-4">
         {filtered.map((p, i) => (
           <ProductCard key={p.node.id} product={p} priority={i < 4} />

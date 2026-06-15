@@ -53,8 +53,8 @@ function OccasionsIndex() {
             Shop by <span className="italic text-bloom">occasion.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
-            From the woman who raised you to the baby who just arrived — every
-            celebration deserves something stitched.
+            From the woman who raised you to the baby who just arrived — every celebration deserves
+            something stitched.
           </p>
         </div>
 
@@ -72,9 +72,7 @@ function OccasionsIndex() {
               <span className="relative font-script text-xl text-bloom">{o.tagline}</span>
               <div className="relative">
                 <h2 className="font-display text-4xl italic leading-tight">{o.title}</h2>
-                <p className="mt-3 max-w-xs text-sm text-foreground/80">
-                  {o.heroCopy}
-                </p>
+                <p className="mt-3 max-w-xs text-sm text-foreground/80">{o.heroCopy}</p>
                 <div className="mt-4 inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] group-hover:text-bloom">
                   Explore
                   <ArrowRight className="h-3.5 w-3.5" />

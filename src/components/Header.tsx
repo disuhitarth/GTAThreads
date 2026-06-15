@@ -24,13 +24,13 @@ function getCollectionLink(c: { title: string; handle: string }) {
     (o) =>
       o.slug === c.handle ||
       c.title.toLowerCase().includes(o.title.toLowerCase()) ||
-      o.title.toLowerCase().includes(c.title.toLowerCase())
+      o.title.toLowerCase().includes(c.title.toLowerCase()),
   );
   const customCategory = CATEGORIES.find(
     (cat) =>
       cat.slug === c.handle ||
       c.title.toLowerCase().includes(cat.title.toLowerCase()) ||
-      cat.title.toLowerCase().includes(c.title.toLowerCase())
+      cat.title.toLowerCase().includes(c.title.toLowerCase()),
   );
 
   if (customOccasion) {
@@ -62,9 +62,7 @@ export function Header() {
     staleTime: 1000 * 60 * 5,
   });
 
-  const totalItems = useCartStore((s) =>
-    s.items.reduce((sum, i) => sum + i.quantity, 0),
-  );
+  const totalItems = useCartStore((s) => s.items.reduce((sum, i) => sum + i.quantity, 0));
   const setOpen = useCartStore((s) => s.setOpen);
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -83,9 +81,7 @@ export function Header() {
     <header
       className={cn(
         "fixed inset-x-0 top-0 z-50 transition-all duration-300",
-        scrolled
-          ? "border-b border-border/60 bg-background/90 backdrop-blur-md"
-          : "bg-transparent",
+        scrolled ? "border-b border-border/60 bg-background/90 backdrop-blur-md" : "bg-transparent",
       )}
     >
       <div className="mx-auto flex max-w-[1600px] items-center justify-between gap-4 px-5 py-2 sm:px-8 sm:py-3 lg:grid lg:grid-cols-[1fr_auto_1fr]">
@@ -124,11 +120,15 @@ export function Header() {
                         return (
                           <Link
                             key={c.id}
-                            to={link.to as any}
-                            params={link.params as any}
+                            to={link.to}
+                            params={link.params}
                             className="flex items-center gap-3 rounded-xl px-3 py-2 text-sm hover:bg-secondary/60"
                           >
-                            <CategoryIcon slug={link.iconSlug} className="h-7 w-7 shrink-0" alt="" />
+                            <CategoryIcon
+                              slug={link.iconSlug}
+                              className="h-7 w-7 shrink-0"
+                              alt=""
+                            />
                             <span>{c.title}</span>
                           </Link>
                         );
@@ -208,8 +208,8 @@ export function Header() {
                 return (
                   <Link
                     key={c.id}
-                    to={link.to as any}
-                    params={link.params as any}
+                    to={link.to}
+                    params={link.params}
                     onClick={() => setMobileOpen(false)}
                     className="flex items-center gap-2 rounded-xl bg-secondary/60 px-3 py-2 text-sm"
                   >

@@ -48,9 +48,20 @@ export interface ShopifyCollectionNode {
   products?: { edges: ShopifyProduct[] };
 }
 
-export async function storefrontApiRequest<T = any>(
+interface ShopifyGraphQLError {
+  message: string;
+  locations?: Array<{ line: number; column: number }>;
+  path?: string[];
+}
+
+interface ShopifyResponse<T> {
+  data: T;
+  errors?: ShopifyGraphQLError[];
+}
+
+export async function storefrontApiRequest<T>(
   query: string,
-  variables: Record<string, any> = {},
+  variables: Record<string, unknown> = {},
 ): Promise<{ data: T } | undefined> {
   const response = await fetch(SHOPIFY_STOREFRONT_URL, {
     method: "POST",
@@ -70,13 +81,12 @@ export async function storefrontApiRequest<T = any>(
   }
 
   if (!response.ok) throw new Error(`HTTP ${response.status}`);
-  const data = await response.json();
-  if (data.errors) {
-    throw new Error(
-      `Shopify error: ${data.errors.map((e: any) => e.message).join(", ")}`,
-    );
+
+  const json: ShopifyResponse<T> = await response.json();
+  if (json.errors?.length) {
+    throw new Error(`Shopify error: ${json.errors.map((e) => e.message).join(", ")}`);
   }
-  return data;
+  return { data: json.data };
 }
 
 const PRODUCT_FIELDS = `
@@ -158,14 +168,15 @@ export async function fetchProductByHandle(handle: string): Promise<ShopifyProdu
 }
 
 export async function fetchCollections(first = 50): Promise<ShopifyCollectionNode[]> {
-  const res = await storefrontApiRequest<{ collections: { edges: Array<{ node: ShopifyCollectionNode }> } }>(
-    COLLECTIONS_QUERY,
-    { first },
-  );
+  const res = await storefrontApiRequest<{
+    collections: { edges: Array<{ node: ShopifyCollectionNode }> };
+  }>(COLLECTIONS_QUERY, { first });
   return res?.data?.collections?.edges?.map((edge) => edge.node) ?? [];
 }
 
-export async function fetchCollectionByHandle(handle: string): Promise<ShopifyCollectionNode | null> {
+export async function fetchCollectionByHandle(
+  handle: string,
+): Promise<ShopifyCollectionNode | null> {
   const res = await storefrontApiRequest<{ collection: ShopifyCollectionNode | null }>(
     COLLECTION_BY_HANDLE_QUERY,
     { handle },
@@ -239,11 +250,22 @@ function isCartNotFoundError(
   );
 }
 
+interface CartCreateResponse {
+  cartCreate: {
+    cart: {
+      id: string;
+      checkoutUrl: string;
+      lines: { edges: Array<{ node: { id: string; merchandise: { id: string } } }> };
+    } | null;
+    userErrors: Array<{ field: string[] | null; message: string }>;
+  };
+}
+
 export async function createShopifyCart(item: {
   variantId: string;
   quantity: number;
 }): Promise<{ cartId: string; checkoutUrl: string; lineId: string } | null> {
-  const data = await storefrontApiRequest<any>(CART_CREATE_MUTATION, {
+  const data = await storefrontApiRequest<CartCreateResponse>(CART_CREATE_MUTATION, {
     input: { lines: [{ quantity: item.quantity, merchandiseId: item.variantId }] },
   });
   const errors = data?.data?.cartCreate?.userErrors ?? [];
@@ -258,11 +280,21 @@ export async function createShopifyCart(item: {
   return { cartId: cart.id, checkoutUrl: formatCheckoutUrl(cart.checkoutUrl), lineId };
 }
 
+interface CartLinesResponse {
+  cartLinesAdd: {
+    cart: {
+      id: string;
+      lines: { edges: Array<{ node: { id: string; merchandise: { id: string } } }> };
+    } | null;
+    userErrors: Array<{ field: string[] | null; message: string }>;
+  };
+}
+
 export async function addLineToShopifyCart(
   cartId: string,
   item: { variantId: string; quantity: number },
 ): Promise<{ success: boolean; lineId?: string; cartNotFound?: boolean }> {
-  const data = await storefrontApiRequest<any>(CART_LINES_ADD_MUTATION, {
+  const data = await storefrontApiRequest<CartLinesResponse>(CART_LINES_ADD_MUTATION, {
     cartId,
     lines: [{ quantity: item.quantity, merchandiseId: item.variantId }],
   });
@@ -270,8 +302,15 @@ export async function addLineToShopifyCart(
   if (isCartNotFoundError(userErrors)) return { success: false, cartNotFound: true };
   if (userErrors.length) return { success: false };
   const lines = data?.data?.cartLinesAdd?.cart?.lines?.edges || [];
-  const newLine = lines.find((l: any) => l.node.merchandise.id === item.variantId);
+  const newLine = lines.find((l) => l.node.merchandise.id === item.variantId);
   return { success: true, lineId: newLine?.node?.id };
+}
+
+interface CartUpdateResponse {
+  cartLinesUpdate: {
+    cart: { id: string } | null;
+    userErrors: Array<{ field: string[] | null; message: string }>;
+  };
 }
 
 export async function updateShopifyCartLine(
@@ -279,7 +318,7 @@ export async function updateShopifyCartLine(
   lineId: string,
   quantity: number,
 ): Promise<{ success: boolean; cartNotFound?: boolean }> {
-  const data = await storefrontApiRequest<any>(CART_LINES_UPDATE_MUTATION, {
+  const data = await storefrontApiRequest<CartUpdateResponse>(CART_LINES_UPDATE_MUTATION, {
     cartId,
     lines: [{ id: lineId, quantity }],
   });
@@ -289,11 +328,18 @@ export async function updateShopifyCartLine(
   return { success: true };
 }
 
+interface CartRemoveResponse {
+  cartLinesRemove: {
+    cart: { id: string } | null;
+    userErrors: Array<{ field: string[] | null; message: string }>;
+  };
+}
+
 export async function removeLineFromShopifyCart(
   cartId: string,
   lineId: string,
 ): Promise<{ success: boolean; cartNotFound?: boolean }> {
-  const data = await storefrontApiRequest<any>(CART_LINES_REMOVE_MUTATION, {
+  const data = await storefrontApiRequest<CartRemoveResponse>(CART_LINES_REMOVE_MUTATION, {
     cartId,
     lineIds: [lineId],
   });
@@ -303,8 +349,12 @@ export async function removeLineFromShopifyCart(
   return { success: true };
 }
 
+interface CartQueryResponse {
+  cart: { id: string; totalQuantity: number } | null;
+}
+
 export async function fetchCartTotalQuantity(cartId: string): Promise<number | null> {
-  const data = await storefrontApiRequest<any>(CART_QUERY, { id: cartId });
+  const data = await storefrontApiRequest<CartQueryResponse>(CART_QUERY, { id: cartId });
   if (!data) return null;
   return data?.data?.cart?.totalQuantity ?? 0;
 }

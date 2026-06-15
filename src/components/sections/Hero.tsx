@@ -71,7 +71,9 @@ export function Hero() {
         <div className="flex flex-col justify-between">
           <div className="hero-fade inline-flex items-center gap-2 self-start rounded-full border border-bloom/30 bg-background/70 px-4 py-1.5 backdrop-blur">
             <Sparkles className="h-3.5 w-3.5 text-bloom" />
-            <span className="font-script text-base text-bloom">a love-letter for every occasion</span>
+            <span className="font-script text-base text-bloom">
+              a love-letter for every occasion
+            </span>
           </div>
 
           <h1 className="mt-8 font-display text-[clamp(3.2rem,10vw,9rem)] font-medium leading-[0.95] tracking-[-0.02em]">
@@ -88,9 +90,9 @@ export function Hero() {
 
           <div className="mt-10 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
             <p className="hero-fade max-w-md text-base leading-relaxed text-muted-foreground">
-              Hand-embroidered sweatshirts, tees, totes and tiny baby pieces — made
-              one stitch at a time in the Greater Toronto Area for every kind of
-              celebration. Made for the girls. Made for the ones you love.
+              Hand-embroidered sweatshirts, tees, totes and tiny baby pieces — made one stitch at a
+              time in the Greater Toronto Area for every kind of celebration. Made for the girls.
+              Made for the ones you love.
             </p>
             <div className="hero-fade flex flex-wrap items-center gap-3">
               <Link

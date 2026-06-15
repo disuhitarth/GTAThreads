@@ -26,8 +26,12 @@ export function Newsletter() {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-rose/40 to-cream px-6 py-20 sm:px-8 sm:py-24 lg:py-32">
-      <div className="absolute -left-10 top-10 text-9xl opacity-20" aria-hidden>🌷</div>
-      <div className="absolute -right-10 bottom-10 text-9xl opacity-20" aria-hidden>🌸</div>
+      <div className="absolute -left-10 top-10 text-9xl opacity-20" aria-hidden>
+        🌷
+      </div>
+      <div className="absolute -right-10 bottom-10 text-9xl opacity-20" aria-hidden>
+        🌸
+      </div>
 
       <div className="relative mx-auto grid max-w-[1200px] gap-12 lg:grid-cols-2 lg:items-center lg:gap-24">
         <div>
@@ -38,9 +42,8 @@ export function Newsletter() {
         </div>
         <div>
           <p className="max-w-md text-base text-muted-foreground">
-            Small drops, occasion guides, behind-the-stitch peeks, and the
-            occasional 10% off — sent only when there's something worth saying.
-            No spam, promise.
+            Small drops, occasion guides, behind-the-stitch peeks, and the occasional 10% off — sent
+            only when there's something worth saying. No spam, promise.
           </p>
           <form
             onSubmit={onSubmit}

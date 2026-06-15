@@ -42,23 +42,20 @@ function AboutPage() {
         </div>
         <div className="space-y-6 text-base leading-relaxed text-muted-foreground lg:pt-32">
           <p>
-            GTA Threads started in a small room in the Greater Toronto Area, with
-            one embroidery machine and a habit of writing names on hoodies for
-            friends.
+            GTA Threads started in a small room in the Greater Toronto Area, with one embroidery
+            machine and a habit of writing names on hoodies for friends.
           </p>
           <p>
-            What began as gifts turned into a quiet little studio — custom-stitched
-            sweatshirts for new mums, grandmas, brides, dads, anime girls, and
-            anyone with someone specific in mind.
+            What began as gifts turned into a quiet little studio — custom-stitched sweatshirts for
+            new mums, grandmas, brides, dads, anime girls, and anyone with someone specific in mind.
           </p>
           <p>
-            Every order is made one at a time. Nothing sits in a warehouse, nothing
-            is printed. Every letter, every flower, every name is stitched into the
-            fabric so it lasts.
+            Every order is made one at a time. Nothing sits in a warehouse, nothing is printed.
+            Every letter, every flower, every name is stitched into the fabric so it lasts.
           </p>
           <p>
-            We ship from Toronto to anywhere a thread can reach. If you have an
-            idea, send a message on{" "}
+            We ship from Toronto to anywhere a thread can reach. If you have an idea, send a message
+            on{" "}
             <a
               href="https://www.instagram.com/gta_threads/"
               target="_blank"

@@ -11,8 +11,13 @@ import { OCCASIONS } from "@/lib/occasions";
 export function CategoryTemplate({ category }: { category: Category }) {
   return (
     <>
-      <section className={`relative overflow-hidden bg-gradient-to-br ${category.tint} px-6 pb-20 pt-32 sm:px-8 sm:pt-40`}>
-        <div className="pointer-events-none absolute right-4 top-32 hidden h-72 w-72 opacity-30 sm:right-12 sm:block" aria-hidden>
+      <section
+        className={`relative overflow-hidden bg-gradient-to-br ${category.tint} px-6 pb-20 pt-32 sm:px-8 sm:pt-40`}
+      >
+        <div
+          className="pointer-events-none absolute right-4 top-32 hidden h-72 w-72 opacity-30 sm:right-12 sm:block"
+          aria-hidden
+        >
           <CategoryIcon slug={category.slug} className="h-full w-full" alt="" />
         </div>
         <div className="relative mx-auto max-w-[1100px]">
@@ -38,17 +43,33 @@ export function CategoryTemplate({ category }: { category: Category }) {
 
       <section className="bg-background px-6 py-16 sm:px-8 sm:py-20">
         <div className="mx-auto max-w-[1100px] space-y-5 text-base leading-relaxed text-muted-foreground">
-          {category.paragraphs.map((p, i) => <p key={i}>{p}</p>)}
+          {category.paragraphs.map((p, i) => (
+            <p key={i}>{p}</p>
+          ))}
         </div>
       </section>
 
-      <Suspense fallback={<div className="min-h-[40vh]" />}>
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-2 gap-x-5 gap-y-14 sm:px-8 lg:grid-cols-4 mt-10 px-6 mx-auto max-w-[1500px]">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="animate-pulse space-y-4">
+                <div className="aspect-[4/5] rounded-3xl bg-secondary" />
+                <div className="h-4 w-2/3 rounded bg-secondary" />
+                <div className="h-4 w-1/3 rounded bg-secondary" />
+              </div>
+            ))}
+          </div>
+        }
+      >
         <CategoryGrid query={category.query} title={category.title} />
       </Suspense>
 
       <section className="bg-cream/60 px-6 py-20 sm:px-8 sm:py-24">
         <div className="mx-auto max-w-[1100px] text-center">
-          <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Browse by occasion</p>
+          <p className="text-xs uppercase tracking-[0.22em] text-muted-foreground">
+            Browse by occasion
+          </p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             {OCCASIONS.map((o) => (
               <Link
@@ -63,7 +84,9 @@ export function CategoryTemplate({ category }: { category: Category }) {
             ))}
           </div>
           <div className="mt-12 flex flex-wrap justify-center gap-2">
-            <p className="w-full text-xs uppercase tracking-[0.22em] text-muted-foreground">More categories</p>
+            <p className="w-full text-xs uppercase tracking-[0.22em] text-muted-foreground">
+              More categories
+            </p>
             {CATEGORIES.filter((c) => c.slug !== category.slug).map((c) => (
               <Link
                 key={c.slug}
@@ -113,7 +136,9 @@ function CategoryGrid({ query, title }: { query?: string; title: string }) {
           </div>
         ) : (
           <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-12 sm:gap-x-8 lg:grid-cols-4">
-            {products.map((p) => <ProductCard key={p.node.id} product={p} />)}
+            {products.map((p) => (
+              <ProductCard key={p.node.id} product={p} />
+            ))}
           </div>
         )}
       </div>

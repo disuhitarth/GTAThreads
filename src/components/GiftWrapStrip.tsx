@@ -25,15 +25,21 @@ export function GiftWrapStrip() {
         <ul className="grid gap-3 text-sm text-foreground/80">
           <li className="rounded-2xl bg-background/70 p-5">
             <p className="font-display text-xl italic text-bloom">01 — handwritten note</p>
-            <p className="mt-1 text-muted-foreground">Up to 250 characters in your words, in real ink on a kraft card.</p>
+            <p className="mt-1 text-muted-foreground">
+              Up to 250 characters in your words, in real ink on a kraft card.
+            </p>
           </li>
           <li className="rounded-2xl bg-background/70 p-5">
             <p className="font-display text-xl italic text-bloom">02 — petal wrap</p>
-            <p className="mt-1 text-muted-foreground">Tissue paper, a dried flower, a satin ribbon, sealed with our stamp.</p>
+            <p className="mt-1 text-muted-foreground">
+              Tissue paper, a dried flower, a satin ribbon, sealed with our stamp.
+            </p>
           </li>
           <li className="rounded-2xl bg-background/70 p-5">
             <p className="font-display text-xl italic text-bloom">03 — direct-ship option</p>
-            <p className="mt-1 text-muted-foreground">Send straight to the recipient with no prices on the slip.</p>
+            <p className="mt-1 text-muted-foreground">
+              Send straight to the recipient with no prices on the slip.
+            </p>
           </li>
         </ul>
       </div>

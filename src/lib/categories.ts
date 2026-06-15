@@ -16,7 +16,8 @@ export const CATEGORIES: Category[] = [
     tagline: "soft cottons, gentle stitches",
     emoji: "👕",
     query: "product_type:Tee OR tag:tee OR title:tee OR title:t-shirt",
-    blurb: "Featherweight cotton tees with hand-embroidered details — the kind you reach for first.",
+    blurb:
+      "Featherweight cotton tees with hand-embroidered details — the kind you reach for first.",
     paragraphs: [
       "We start with breathable 100% cotton, pre-washed for that broken-in feel, then add embroidery thread by thread. No iron-ons, no transfers — just real stitches that soften with every wash.",
       "Pick a colour, send us your words, and we'll stitch it onto a tee they'll wear until it falls apart (and then ask for another).",
@@ -28,7 +29,8 @@ export const CATEGORIES: Category[] = [
     title: "Hoodies & sweatshirts",
     tagline: "heavyweight, hug-like",
     emoji: "🧥",
-    query: "product_type:Hoodie OR product_type:Sweatshirt OR tag:hoodie OR title:hoodie OR title:sweatshirt OR title:crewneck",
+    query:
+      "product_type:Hoodie OR product_type:Sweatshirt OR tag:hoodie OR title:hoodie OR title:sweatshirt OR title:crewneck",
     blurb: "Heavyweight crewnecks and pullovers — the gift they'll live in.",
     paragraphs: [
       "Our hoodies are made from 400gsm brushed-cotton fleece — the kind that holds a hug. Roomy fit, ribbed cuffs, embroidered chest or sleeve detail.",
@@ -53,8 +55,10 @@ export const CATEGORIES: Category[] = [
     title: "Accessories",
     tagline: "totes, socks, and tiny extras",
     emoji: "🧺",
-    query: "product_type:Accessory OR product_type:Tote OR tag:accessory OR title:tote OR title:bag OR title:mug OR title:sock",
-    blurb: "Embroidered totes for the farmer's market and little extras that make a gift feel finished.",
+    query:
+      "product_type:Accessory OR product_type:Tote OR tag:accessory OR title:tote OR title:bag OR title:mug OR title:sock",
+    blurb:
+      "Embroidered totes for the farmer's market and little extras that make a gift feel finished.",
     paragraphs: [
       "Heavy canvas totes, ribbed crew socks with a tiny daisy on the ankle, ceramic mugs and stickers. Perfect for stuffing a gift box.",
     ],
@@ -121,5 +125,4 @@ export const CATEGORIES: Category[] = [
   },
 ];
 
-export const categoryBySlug = (slug: string) =>
-  CATEGORIES.find((c) => c.slug === slug);
+export const categoryBySlug = (slug: string) => CATEGORIES.find((c) => c.slug === slug);

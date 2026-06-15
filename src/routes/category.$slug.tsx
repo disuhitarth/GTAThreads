@@ -57,7 +57,10 @@ export const Route = createFileRoute("/category/$slug")({
       <div>
         <h1 className="font-display text-3xl italic">A loose thread.</h1>
         <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
-        <button onClick={reset} className="mt-6 rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom">
+        <button
+          onClick={reset}
+          className="mt-6 rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom"
+        >
           Retry
         </button>
       </div>

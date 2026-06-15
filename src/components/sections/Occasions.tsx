@@ -59,8 +59,8 @@ export function Occasions() {
             Shop by <span className="italic text-bloom">occasion.</span>
           </h2>
           <p className="mx-auto max-w-xl text-base text-muted-foreground">
-            Whether you're celebrating the new mum, the dad who's seen it all,
-            or your own Galentine — there's a stitched gift for that.
+            Whether you're celebrating the new mum, the dad who's seen it all, or your own Galentine
+            — there's a stitched gift for that.
           </p>
         </div>
 

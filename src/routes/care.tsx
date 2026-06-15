@@ -28,7 +28,11 @@ export const Route = createFileRoute("/care")({
   head: () => ({
     meta: [
       { title: "Care instructions — GTA Threads" },
-      { name: "description", content: "How to wash, dry and care for hand-embroidered cotton pieces so they last for years." },
+      {
+        name: "description",
+        content:
+          "How to wash, dry and care for hand-embroidered cotton pieces so they last for years.",
+      },
       { property: "og:title", content: "Care instructions — GTA Threads" },
       { property: "og:description", content: "How to care for hand-embroidered cotton." },
       { property: "og:url", content: "/care" },
@@ -53,10 +57,26 @@ export const Route = createFileRoute("/care")({
 });
 
 const TIPS = [
-  { icon: Droplet, title: "Cold wash, inside out", body: "Always wash inside-out in cold water on a gentle cycle. Use a mild, dye-free detergent — no bleach, ever." },
-  { icon: Wind, title: "Air dry flat", body: "Lay flat to dry, reshape while damp. Tumble drying can pucker the embroidery and shrink the cotton." },
-  { icon: Sun, title: "Iron on the reverse", body: "If you must iron, do it on the reverse side, on a medium setting, with a thin cotton cloth between the iron and the stitches." },
-  { icon: Sparkles, title: "Steam to refresh", body: "A handheld steamer is your best friend — it refreshes the cotton without flattening the embroidery." },
+  {
+    icon: Droplet,
+    title: "Cold wash, inside out",
+    body: "Always wash inside-out in cold water on a gentle cycle. Use a mild, dye-free detergent — no bleach, ever.",
+  },
+  {
+    icon: Wind,
+    title: "Air dry flat",
+    body: "Lay flat to dry, reshape while damp. Tumble drying can pucker the embroidery and shrink the cotton.",
+  },
+  {
+    icon: Sun,
+    title: "Iron on the reverse",
+    body: "If you must iron, do it on the reverse side, on a medium setting, with a thin cotton cloth between the iron and the stitches.",
+  },
+  {
+    icon: Sparkles,
+    title: "Steam to refresh",
+    body: "A handheld steamer is your best friend — it refreshes the cotton without flattening the embroidery.",
+  },
 ];
 
 function Care() {
@@ -69,7 +89,8 @@ function Care() {
             Care <span className="italic text-bloom">instructions.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-md text-base text-muted-foreground">
-            Real embroidery, like real flowers, asks for a little tenderness. Treat it gently and it will look beautiful for years.
+            Real embroidery, like real flowers, asks for a little tenderness. Treat it gently and it
+            will look beautiful for years.
           </p>
         </div>
 
@@ -85,9 +106,17 @@ function Care() {
 
         <div className="mt-16 space-y-5 text-base leading-relaxed text-muted-foreground">
           <h2 className="font-display text-3xl italic text-foreground">A few extra notes</h2>
-          <p>If a thread loosens, do not pull — clip it close to the fabric with sharp scissors. Most loose threads happen in the first few washes and settle naturally.</p>
-          <p>Avoid harsh fabric softeners; they coat the threads and dull the colour. A splash of white vinegar in the rinse keeps everything soft, without the residue.</p>
-          <p>Store folded, not on a hanger — embroidered pieces hold their shape best lying flat.</p>
+          <p>
+            If a thread loosens, do not pull — clip it close to the fabric with sharp scissors. Most
+            loose threads happen in the first few washes and settle naturally.
+          </p>
+          <p>
+            Avoid harsh fabric softeners; they coat the threads and dull the colour. A splash of
+            white vinegar in the rinse keeps everything soft, without the residue.
+          </p>
+          <p>
+            Store folded, not on a hanger — embroidered pieces hold their shape best lying flat.
+          </p>
         </div>
 
         <div className="mt-16">

@@ -40,7 +40,10 @@ function CategoryIndex() {
               params={{ slug: c.slug }}
               className={`group relative overflow-hidden rounded-[2rem] bg-gradient-to-br ${c.tint} p-8 transition-transform hover:-translate-y-1`}
             >
-              <div className="pointer-events-none absolute right-4 top-4 h-24 w-24 opacity-90 transition-transform group-hover:scale-110" aria-hidden>
+              <div
+                className="pointer-events-none absolute right-4 top-4 h-24 w-24 opacity-90 transition-transform group-hover:scale-110"
+                aria-hidden
+              >
                 <CategoryIcon slug={c.slug} className="h-full w-full" alt="" />
               </div>
               <p className="font-script text-lg text-bloom">{c.tagline}</p>

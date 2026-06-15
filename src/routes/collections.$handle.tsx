@@ -48,6 +48,20 @@ export const Route = createFileRoute("/collections/$handle")({
     };
   },
   component: CollectionPage,
+  errorComponent: ({ error, reset }) => (
+    <div className="grid min-h-[60vh] place-items-center px-5 text-center">
+      <div>
+        <h1 className="font-display text-3xl italic">A loose thread.</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+        <button
+          onClick={reset}
+          className="mt-6 rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom"
+        >
+          Retry
+        </button>
+      </div>
+    </div>
+  ),
   notFoundComponent: () => (
     <div className="grid min-h-[60vh] place-items-center px-5 text-center">
       <div>
@@ -110,7 +124,9 @@ function CollectionInner() {
           {products.length === 0 ? (
             <div className="mt-10 rounded-3xl border border-dashed border-border bg-card/60 py-24 text-center">
               <p className="font-script text-2xl text-bloom">nothing here yet</p>
-              <p className="mt-2 text-sm text-muted-foreground">No products found in this collection.</p>
+              <p className="mt-2 text-sm text-muted-foreground">
+                No products found in this collection.
+              </p>
             </div>
           ) : (
             <div className="mt-10 grid grid-cols-2 gap-x-5 gap-y-12 sm:gap-x-8 lg:grid-cols-4">

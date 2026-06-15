@@ -44,10 +44,7 @@ export function Lookbook() {
   }, []);
 
   return (
-    <section
-      ref={root}
-      className="relative overflow-hidden bg-foreground text-background"
-    >
+    <section ref={root} className="relative overflow-hidden bg-foreground text-background">
       <div className="mx-auto flex max-w-[1600px] flex-col gap-4 px-6 pt-20 sm:px-8 sm:pt-24 lg:pt-32">
         <span className="font-script text-2xl text-rose">a little look around</span>
         <h2 className="font-display text-5xl leading-[1.02] tracking-tight sm:text-7xl">

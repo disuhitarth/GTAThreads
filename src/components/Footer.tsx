@@ -12,8 +12,8 @@ export function Footer() {
           <div>
             <Logo />
             <p className="mt-5 max-w-sm text-sm text-muted-foreground">
-              A tiny embroidery studio in the Greater Toronto Area, stitching one
-              piece at a time — gifts that feel like a love letter you can wear.
+              A tiny embroidery studio in the Greater Toronto Area, stitching one piece at a time —
+              gifts that feel like a love letter you can wear.
             </p>
           </div>
           <FooterCol
@@ -85,20 +85,22 @@ export function Footer() {
         </div>
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <span>© {new Date().getFullYear()} GTA Threads · Stitched with love in Toronto.</span>
-          <span className="font-script text-base text-bloom">made for the girls</span>
+          <div className="flex items-center gap-4">
+            <Link to="/privacy" className="hover:text-bloom">
+              Privacy
+            </Link>
+            <Link to="/terms" className="hover:text-bloom">
+              Terms
+            </Link>
+            <span className="font-script text-base text-bloom">made for the girls</span>
+          </div>
         </div>
       </div>
     </footer>
   );
 }
 
-function FooterCol({
-  title,
-  links,
-}: {
-  title: string;
-  links: { to: string; label: string }[];
-}) {
+function FooterCol({ title, links }: { title: string; links: { to: string; label: string }[] }) {
   return (
     <div>
       <h4 className="font-script text-xl text-bloom">{title}</h4>

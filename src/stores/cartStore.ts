@@ -132,7 +132,11 @@ export const useCartStore = create<CartStore>()(
           if (result.success) {
             const cur = get().items;
             const next = cur.filter((i) => i.variantId !== variantId);
-            next.length === 0 ? clearCart() : set({ items: next });
+            if (next.length === 0) {
+              clearCart();
+            } else {
+              set({ items: next });
+            }
           } else if (result.cartNotFound) {
             clearCart();
           }

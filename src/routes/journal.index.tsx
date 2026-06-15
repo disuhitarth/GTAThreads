@@ -32,8 +32,8 @@ function JournalIndex() {
             The <span className="italic text-bloom">journal.</span>
           </h1>
           <p className="mx-auto mt-6 max-w-xl text-base text-muted-foreground">
-            Notes from the studio. On stitching, on gifting, on the slow business
-            of making something by hand.
+            Notes from the studio. On stitching, on gifting, on the slow business of making
+            something by hand.
           </p>
         </div>
 

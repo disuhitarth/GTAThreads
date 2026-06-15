@@ -17,6 +17,7 @@ import { CartDrawer } from "@/components/CartDrawer";
 import { Grain } from "@/components/Grain";
 import { FlowerCursor } from "@/components/FlowerCursor";
 import { CareChat } from "@/components/CareChat";
+import { CookieConsent } from "@/components/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
 import { useCartSync } from "@/hooks/useCartSync";
 import { fetchCollections } from "@/lib/shopify";
@@ -97,8 +98,14 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         name: "twitter:description",
         content: "Custom embroidered gifts from a small Toronto studio.",
       },
+      { property: "og:image", content: `${SITE_URL}/og-default.png` },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
+      { name: "twitter:image", content: `${SITE_URL}/og-default.png` },
     ],
     links: [
+      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon.svg" },
       { rel: "stylesheet", href: appCss },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
@@ -189,6 +196,7 @@ function AppShell() {
       <Footer />
       <CartDrawer />
       <CareChat />
+      <CookieConsent />
       <Toaster position="top-center" />
     </div>
   );

@@ -13,7 +13,7 @@ import { z } from "zod";
  *   TRACKING_API_BASE_URL
  */
 export const lookupTracking = createServerFn({ method: "POST" })
-  .inputValidator((input) =>
+  .validator((input: unknown) =>
     z
       .object({
         trackingNumber: z.string().min(4),

@@ -2,8 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Star, ExternalLink, Heart } from "lucide-react";
 import { fetchGoogleReviews, type Review } from "@/lib/reviews.functions";
 
-const ETSY_URL =
-  "https://www.etsy.com/ca/shop/giftedthreads25?ref=sh-carousel-1#reviews";
+const ETSY_URL = "https://www.etsy.com/ca/shop/giftedthreads25?ref=sh-carousel-1#reviews";
 
 // Curated review wall — swap with real Google/Etsy copy as it comes in.
 // Marked as source so we can show provenance honestly.
@@ -56,10 +55,7 @@ function Stars({ n }: { n: number }) {
   return (
     <div className="flex gap-0.5" aria-label={`${n} out of 5 stars`}>
       {Array.from({ length: 5 }).map((_, i) => (
-        <Star
-          key={i}
-          className={`h-4 w-4 ${i < n ? "fill-bloom text-bloom" : "text-border"}`}
-        />
+        <Star key={i} className={`h-4 w-4 ${i < n ? "fill-bloom text-bloom" : "text-border"}`} />
       ))}
     </div>
   );
@@ -123,14 +119,10 @@ export function Reviews() {
       ? [...googleReviews, ...CURATED.filter((r) => r.source === "Etsy")].slice(0, 6)
       : CURATED;
 
-  const avg =
-    reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length || 5;
+  const avg = reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length || 5;
 
   return (
-    <section
-      id="reviews"
-      className="bg-cream/40 px-6 py-20 sm:px-8 sm:py-24 lg:py-32"
-    >
+    <section id="reviews" className="bg-cream/40 px-6 py-20 sm:px-8 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-[1200px]">
         <div className="flex flex-col items-center gap-3 text-center">
           <span className="font-script text-2xl text-bloom">customer love</span>

@@ -111,5 +111,4 @@ export const OCCASION_FAQS: Record<string, Faq[]> = {
   ],
 };
 
-export const getFaqs = (slug: string): Faq[] =>
-  OCCASION_FAQS[slug] ?? COMMON;
+export const getFaqs = (slug: string): Faq[] => OCCASION_FAQS[slug] ?? COMMON;

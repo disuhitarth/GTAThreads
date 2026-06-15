@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { ArrowLeft, ArrowRight, Check, Mail, Sparkles } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, Mail, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { MagneticButton } from "@/components/MagneticButton";
 
@@ -53,7 +53,16 @@ const EMPTY: FormState = {
 const STORAGE_KEY = "gta-threads:custom-order";
 
 const PRODUCTS = ["T-shirts", "Hoodies", "Crewnecks", "Hats", "Tote bags", "Baby onesies", "Other"];
-const OCCASIONS = ["Wedding", "Baby shower", "Birthday", "Corporate gift", "Sports team", "Memorial", "Holiday", "Other"];
+const OCCASIONS = [
+  "Wedding",
+  "Baby shower",
+  "Birthday",
+  "Corporate gift",
+  "Sports team",
+  "Memorial",
+  "Holiday",
+  "Other",
+];
 const DESIGN_STATUS = [
   "I have artwork ready",
   "I have an idea — need help",
@@ -67,6 +76,7 @@ function CustomOrders() {
   const [step, setStep] = useState(0);
   const [form, setForm] = useState<FormState>(EMPTY);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
 
   // restore from localStorage
   useEffect(() => {
@@ -74,14 +84,21 @@ function CustomOrders() {
     try {
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) setForm({ ...EMPTY, ...JSON.parse(saved) });
-    } catch {/* ignore */}
+    } catch {
+      /* ignore */
+    }
   }, []);
   useEffect(() => {
     if (typeof window === "undefined") return;
-    try { localStorage.setItem(STORAGE_KEY, JSON.stringify(form)); } catch {/* ignore */}
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(form));
+    } catch {
+      /* ignore */
+    }
   }, [form]);
 
-  const set = <K extends keyof FormState>(k: K, v: FormState[K]) => setForm((f) => ({ ...f, [k]: v }));
+  const set = <K extends keyof FormState>(k: K, v: FormState[K]) =>
+    setForm((f) => ({ ...f, [k]: v }));
 
   const steps = [
     {
@@ -106,7 +123,10 @@ function CustomOrders() {
       valid: form.quantity > 0,
       content: (
         <div className="space-y-6">
-          <p className="text-center font-display text-7xl italic text-bloom">{form.quantity}{form.quantity >= 500 ? "+" : ""}</p>
+          <p className="text-center font-display text-7xl italic text-bloom">
+            {form.quantity}
+            {form.quantity >= 500 ? "+" : ""}
+          </p>
           <input
             type="range"
             min={5}
@@ -117,7 +137,10 @@ function CustomOrders() {
             className="w-full accent-[color:var(--bloom)]"
           />
           <div className="flex justify-between text-xs text-muted-foreground">
-            <span>5</span><span>100</span><span>250</span><span>500+</span>
+            <span>5</span>
+            <span>100</span>
+            <span>250</span>
+            <span>500+</span>
           </div>
         </div>
       ),
@@ -127,7 +150,11 @@ function CustomOrders() {
       hint: "Don't worry — most folks start with just an idea.",
       valid: !!form.designStatus,
       content: (
-        <ChipGrid value={form.designStatus} options={DESIGN_STATUS} onChange={(v) => set("designStatus", v)} />
+        <ChipGrid
+          value={form.designStatus}
+          options={DESIGN_STATUS}
+          onChange={(v) => set("designStatus", v)}
+        />
       ),
     },
     {
@@ -166,10 +193,31 @@ function CustomOrders() {
       valid: form.name.trim().length > 1 && /.+@.+\..+/.test(form.email),
       content: (
         <div className="grid gap-4 sm:grid-cols-2">
-          <Field label="Your name" value={form.name} onChange={(v) => set("name", v.slice(0, 100))} placeholder="First & last" />
-          <Field label="Email" type="email" value={form.email} onChange={(v) => set("email", v.slice(0, 200))} placeholder="you@example.com" />
-          <Field label="Phone (optional)" value={form.phone} onChange={(v) => set("phone", v.slice(0, 30))} placeholder="(416) 555-0100" />
-          <Field label="City" value={form.city} onChange={(v) => set("city", v.slice(0, 100))} placeholder="Toronto, ON" />
+          <Field
+            label="Your name"
+            value={form.name}
+            onChange={(v) => set("name", v.slice(0, 100))}
+            placeholder="First & last"
+          />
+          <Field
+            label="Email"
+            type="email"
+            value={form.email}
+            onChange={(v) => set("email", v.slice(0, 200))}
+            placeholder="you@example.com"
+          />
+          <Field
+            label="Phone (optional)"
+            value={form.phone}
+            onChange={(v) => set("phone", v.slice(0, 30))}
+            placeholder="(416) 555-0100"
+          />
+          <Field
+            label="City"
+            value={form.city}
+            onChange={(v) => set("city", v.slice(0, 100))}
+            placeholder="Toronto, ON"
+          />
         </div>
       ),
     },
@@ -178,34 +226,42 @@ function CustomOrders() {
   const current = steps[step];
   const isLast = step === steps.length - 1;
 
-  function submit() {
-    // Save locally + open mailto so the brief reaches the studio. Once Cloud is enabled
-    // we'll swap this for a server function that writes to Supabase.
-    const lines = [
-      `New custom order request — GTA Threads`,
-      ``,
-      `Product: ${form.product}`,
-      `Occasion: ${form.occasion}`,
-      `Quantity: ${form.quantity}`,
-      `Design status: ${form.designStatus}`,
-      `Timeline: ${form.timeline}`,
-      `Budget: ${form.budget}`,
-      ``,
-      `Notes:`,
-      form.notes || "(none)",
-      ``,
-      `From: ${form.name} <${form.email}>`,
-      `Phone: ${form.phone || "(not provided)"}`,
-      `City: ${form.city || "(not provided)"}`,
-    ].join("\n");
+  async function submit() {
+    setSubmitting(true);
+    try {
+      const lines = [
+        `New custom order request — GTA Threads`,
+        ``,
+        `Product: ${form.product}`,
+        `Occasion: ${form.occasion}`,
+        `Quantity: ${form.quantity}`,
+        `Design status: ${form.designStatus}`,
+        `Timeline: ${form.timeline}`,
+        `Budget: ${form.budget}`,
+        ``,
+        `Notes:`,
+        form.notes || "(none)",
+        ``,
+        `From: ${form.name} <${form.email}>`,
+        `Phone: ${form.phone || "(not provided)"}`,
+        `City: ${form.city || "(not provided)"}`,
+      ].join("\n");
 
-    const subject = encodeURIComponent(`Custom order — ${form.occasion || "request"} (${form.quantity} ${form.product})`);
-    const body = encodeURIComponent(lines);
-    window.location.href = `mailto:hello@gtathreads.com?subject=${subject}&body=${body}`;
+      const subject = encodeURIComponent(
+        `Custom order — ${form.occasion || "request"} (${form.quantity} ${form.product})`,
+      );
+      const body = encodeURIComponent(lines);
+      window.location.href = `mailto:hello@gtathreads.com?subject=${subject}&body=${body}`;
 
-    try { localStorage.removeItem(STORAGE_KEY); } catch {/* ignore */}
-    setSubmitted(true);
-    toast.success("Your request is on its way 🌸");
+      try {
+        localStorage.removeItem(STORAGE_KEY);
+      } catch { /* ignore */ }
+
+      setSubmitted(true);
+      toast.success("Your brief is on its way!");
+    } finally {
+      setSubmitting(false);
+    }
   }
 
   if (submitted) {
@@ -220,11 +276,22 @@ function CustomOrders() {
             Your brief is <span className="text-bloom">on its way.</span>
           </h1>
           <p className="mt-6 text-base text-muted-foreground">
-            We'll reply within one business day with a quote, palette suggestions and a few sample mock-ups. Check your sent folder — and your inbox.
+            We'll reply within one business day with a quote, palette suggestions and a few sample
+            mock-ups. Check your sent folder — and your inbox.
           </p>
           <div className="mt-10 flex flex-wrap justify-center gap-3">
-            <Link to="/" className="rounded-full bg-foreground px-6 py-3 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom">Back home</Link>
-            <Link to="/shop" className="rounded-full border border-foreground/60 px-6 py-3 text-xs uppercase tracking-[0.22em] hover:border-bloom hover:text-bloom">Browse shop</Link>
+            <Link
+              to="/"
+              className="rounded-full bg-foreground px-6 py-3 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom"
+            >
+              Back home
+            </Link>
+            <Link
+              to="/shop"
+              className="rounded-full border border-foreground/60 px-6 py-3 text-xs uppercase tracking-[0.22em] hover:border-bloom hover:text-bloom"
+            >
+              Browse shop
+            </Link>
           </div>
         </div>
       </section>
@@ -240,7 +307,8 @@ function CustomOrders() {
             Custom <span className="italic text-bloom">orders.</span>
           </h1>
           <p className="mx-auto mt-5 max-w-md text-base text-muted-foreground">
-            Weddings, baby showers, sports teams, corporate gifts — eight little questions and we'll send a quote.
+            Weddings, baby showers, sports teams, corporate gifts — eight little questions and we'll
+            send a quote.
           </p>
         </div>
 
@@ -276,11 +344,15 @@ function CustomOrders() {
             {isLast ? (
               <MagneticButton
                 onClick={submit}
-                disabled={!current.valid}
+                disabled={!current.valid || submitting}
                 className="group items-center gap-2 rounded-full bg-foreground px-7 py-3 text-xs uppercase tracking-[0.22em] text-background enabled:hover:bg-bloom disabled:opacity-40"
               >
-                <Mail className="h-4 w-4" />
-                Send my brief
+                {submitting ? (
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                ) : (
+                  <Mail className="h-4 w-4" />
+                )}
+                {submitting ? "Sending..." : "Send my brief"}
               </MagneticButton>
             ) : (
               <MagneticButton
@@ -347,7 +419,9 @@ function Field({
 }) {
   return (
     <label className="block">
-      <span className="block text-xs uppercase tracking-[0.22em] text-muted-foreground">{label}</span>
+      <span className="block text-xs uppercase tracking-[0.22em] text-muted-foreground">
+        {label}
+      </span>
       <input
         type={type}
         value={value}

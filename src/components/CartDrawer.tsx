@@ -25,10 +25,7 @@ export function CartDrawer() {
   } = useCartStore();
 
   const totalItems = items.reduce((s, i) => s + i.quantity, 0);
-  const totalPrice = items.reduce(
-    (s, i) => s + parseFloat(i.price.amount) * i.quantity,
-    0,
-  );
+  const totalPrice = items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
   const currency = items[0]?.price.currencyCode ?? "CAD";
 
   useEffect(() => {
@@ -47,9 +44,7 @@ export function CartDrawer() {
     <Sheet open={isOpen} onOpenChange={setOpen}>
       <SheetContent className="flex h-full w-full flex-col bg-background sm:max-w-md">
         <SheetHeader className="flex-shrink-0">
-          <SheetTitle className="font-display text-2xl italic tracking-tight">
-            Your bag
-          </SheetTitle>
+          <SheetTitle className="font-display text-2xl italic tracking-tight">Your bag</SheetTitle>
           <SheetDescription>
             {totalItems === 0
               ? "Nothing here yet."
@@ -128,9 +123,7 @@ export function CartDrawer() {
                   <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     Subtotal
                   </span>
-                  <span className="font-display text-2xl">
-                    {formatPrice(totalPrice, currency)}
-                  </span>
+                  <span className="font-display text-2xl">{formatPrice(totalPrice, currency)}</span>
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Taxes & shipping calculated at checkout.

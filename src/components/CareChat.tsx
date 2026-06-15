@@ -70,7 +70,9 @@ export function CareChat() {
           </div>
           <div className="min-w-0">
             <p className="truncate font-display text-base italic">the studio</p>
-            <p className="truncate text-xs text-muted-foreground">replies in seconds · custom orders + tracking</p>
+            <p className="truncate text-xs text-muted-foreground">
+              replies in seconds · custom orders + tracking
+            </p>
           </div>
         </div>
 
@@ -79,7 +81,8 @@ export function CareChat() {
           {messages.length === 0 && (
             <div className="space-y-3">
               <div className="rounded-2xl bg-secondary/60 px-4 py-3 text-sm leading-relaxed text-foreground">
-                hi! i can help with order tracking, custom requests, washing, sizing and returns. what's on your mind?
+                hi! i can help with order tracking, custom requests, washing, sizing and returns.
+                what's on your mind?
               </div>
               <div className="flex flex-wrap gap-2 pt-1">
                 {SUGGESTIONS.map((s) => (
@@ -97,21 +100,14 @@ export function CareChat() {
           )}
 
           {messages.map((m) => {
-            const text = m.parts
-              .map((p) => (p.type === "text" ? p.text : ""))
-              .join("");
+            const text = m.parts.map((p) => (p.type === "text" ? p.text : "")).join("");
             const isUser = m.role === "user";
             return (
-              <div
-                key={m.id}
-                className={cn("flex", isUser ? "justify-end" : "justify-start")}
-              >
+              <div key={m.id} className={cn("flex", isUser ? "justify-end" : "justify-start")}>
                 <div
                   className={cn(
                     "max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2.5 text-sm leading-relaxed",
-                    isUser
-                      ? "bg-foreground text-background"
-                      : "bg-secondary/60 text-foreground",
+                    isUser ? "bg-foreground text-background" : "bg-secondary/60 text-foreground",
                   )}
                 >
                   {text || (

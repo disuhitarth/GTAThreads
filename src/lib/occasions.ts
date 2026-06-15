@@ -61,7 +61,8 @@ export const OCCASIONS: Occasion[] = [
     title: "For Grandma & Grandpa",
     tagline: "For the ones who spoil first, ask later.",
     emoji: "🪴",
-    query: "tag:grandma OR tag:grandpa OR title:grandma OR title:grandpa OR title:nana OR title:papa",
+    query:
+      "tag:grandma OR tag:grandpa OR title:grandma OR title:grandpa OR title:nana OR title:papa",
     heroCopy: "Stitched keepsakes from the grandkids.",
     paragraphs: [
       "Grandparents save everything. Make it worth saving. Embroidered crewnecks with the grandkids' names, birth years, or the little nicknames only they get to use.",
@@ -238,5 +239,4 @@ export const OCCASIONS: Occasion[] = [
   },
 ];
 
-export const occasionBySlug = (slug: string) =>
-  OCCASIONS.find((o) => o.slug === slug);
+export const occasionBySlug = (slug: string) => OCCASIONS.find((o) => o.slug === slug);

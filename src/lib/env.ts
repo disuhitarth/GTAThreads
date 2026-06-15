@@ -4,7 +4,7 @@
  *
  * VITE_* vars are bundled into the client at build time and are public-safe
  * (Storefront API token is meant to be public). Server-only secrets like
- * LOVABLE_API_KEY are read from `process.env` inside server functions.
+ * GROQ_API_KEY are read from `process.env` inside server functions.
  */
 
 const isServer = typeof window === "undefined";
@@ -33,7 +33,4 @@ export const SHOPIFY_STOREFRONT_TOKEN = read(
 export const SHOPIFY_API_VERSION = read("VITE_SHOPIFY_API_VERSION", "2026-04");
 
 /** Absolute origin used in canonical URLs, JSON-LD, sitemap, OG tags. No trailing slash. */
-export const SITE_URL = read(
-  "VITE_SITE_URL",
-  "https://gta-threads-showcase.lovable.app",
-).replace(/\/$/, "");
+export const SITE_URL = read("VITE_SITE_URL", "https://gtathreads.netlify.app").replace(/\/$/, "");

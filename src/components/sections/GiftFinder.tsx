@@ -54,8 +54,8 @@ export function GiftFinder() {
               The <span className="italic text-bloom">gift finder.</span>
             </h2>
             <p className="mt-6 max-w-md text-base text-muted-foreground">
-              Three little questions. One perfectly stitched suggestion. We'll
-              find something they'll actually keep.
+              Three little questions. One perfectly stitched suggestion. We'll find something
+              they'll actually keep.
             </p>
           </div>
 
@@ -93,9 +93,7 @@ export function GiftFinder() {
             ) : (
               <div className="text-center">
                 <Heart className="mx-auto h-10 w-10 fill-bloom text-bloom" />
-                <h3 className="mt-4 font-display text-3xl italic">
-                  We've got just the thing.
-                </h3>
+                <h3 className="mt-4 font-display text-3xl italic">We've got just the thing.</h3>
                 <p className="mt-3 text-sm text-muted-foreground">
                   {answers.who} · {answers.occasion} · {answers.budget}
                 </p>

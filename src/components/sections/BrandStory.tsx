@@ -46,13 +46,13 @@ export function BrandStory() {
             <span className="italic text-bloom">stitching slowly.</span>
           </h2>
           <p className="reveal mt-8 max-w-md text-base leading-relaxed text-muted-foreground">
-            GTA Threads is a one-woman embroidery studio in the Greater Toronto Area.
-            Every piece is made on a single machine, in a quiet room — for grandmas,
-            new mums, brides, dads, anime girls, and the people you actually love.
+            GTA Threads is a one-woman embroidery studio in the Greater Toronto Area. Every piece is
+            made on a single machine, in a quiet room — for grandmas, new mums, brides, dads, anime
+            girls, and the people you actually love.
           </p>
           <p className="reveal mt-4 max-w-md text-base leading-relaxed text-muted-foreground">
-            No mass production. No 24-hour shipping. Just careful stitching, soft
-            cotton, and a little daisy somewhere you didn't expect.
+            No mass production. No 24-hour shipping. Just careful stitching, soft cotton, and a
+            little daisy somewhere you didn't expect.
           </p>
           <blockquote className="reveal mt-10 border-l-2 border-bloom pl-6 font-display text-2xl italic leading-snug text-foreground sm:text-3xl">
             "A gift that doesn't get re-gifted — that's the whole job."

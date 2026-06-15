@@ -14,7 +14,7 @@ interface Props {
 
 export function RevealOnScroll({ children, y = 30, delay = 0, className, as = "div" }: Props) {
   const ref = useRef<HTMLDivElement>(null);
-  const Tag = as as any;
+  const Tag = as as React.ElementType;
 
   useEffect(() => {
     const el = ref.current;

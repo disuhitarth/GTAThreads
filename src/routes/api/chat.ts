@@ -14,14 +14,16 @@ export const Route = createFileRoute("/api/chat")({
           return new Response("Messages are required", { status: 400 });
         }
 
-        const key = process.env.LOVABLE_API_KEY;
+        const key = process.env.GROQ_API_KEY;
         if (!key) {
-          return new Response("Missing LOVABLE_API_KEY", { status: 500 });
+          return new Response("Missing GROQ_API_KEY — get one free at https://console.groq.com", {
+            status: 500,
+          });
         }
 
         try {
           const gateway = createLovableAiGatewayProvider(key);
-          const model = gateway("google/gemini-3-flash-preview");
+          const model = gateway("llama-3.3-70b-versatile");
           const result = streamText({
             model,
             system: CARE_SYSTEM_PROMPT,

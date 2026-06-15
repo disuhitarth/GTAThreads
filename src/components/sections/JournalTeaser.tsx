@@ -23,8 +23,7 @@ export const POSTS = [
   {
     slug: "how-to-gift-an-heirloom",
     title: "How to gift an heirloom (when you only have a week)",
-    excerpt:
-      "Five tiny tricks for making a gift feel like it'll be passed down.",
+    excerpt: "Five tiny tricks for making a gift feel like it'll be passed down.",
     cover: occasions,
     minutes: 3,
     date: "February 2026",
@@ -40,8 +39,7 @@ export const POSTS = [
   {
     slug: "behind-the-bloom",
     title: "Behind the bloom — the spring drop, explained",
-    excerpt:
-      "The colours, the flowers, and the playlist behind our newest collection.",
+    excerpt: "The colours, the flowers, and the playlist behind our newest collection.",
     cover: journal,
     minutes: 5,
     date: "January 2026",

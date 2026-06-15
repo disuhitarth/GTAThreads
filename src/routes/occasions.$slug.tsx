@@ -36,7 +36,12 @@ export const Route = createFileRoute("/occasions/$slug")({
             itemListElement: [
               { "@type": "ListItem", position: 1, name: "Home", item: "/" },
               { "@type": "ListItem", position: 2, name: "Occasions", item: "/occasions" },
-              { "@type": "ListItem", position: 3, name: o.title, item: `/occasions/${params.slug}` },
+              {
+                "@type": "ListItem",
+                position: 3,
+                name: o.title,
+                item: `/occasions/${params.slug}`,
+              },
             ],
           }),
         },
@@ -67,7 +72,12 @@ export const Route = createFileRoute("/occasions/$slug")({
       <div>
         <h1 className="font-display text-3xl italic">A loose thread.</h1>
         <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
-        <button onClick={reset} className="mt-6 rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom">Retry</button>
+        <button
+          onClick={reset}
+          className="mt-6 rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom"
+        >
+          Retry
+        </button>
       </div>
     </div>
   ),
@@ -92,8 +102,13 @@ function OccasionPage() {
 
   return (
     <>
-      <section className={`relative overflow-hidden bg-gradient-to-br ${o.tint} px-5 pb-20 pt-32 sm:px-8 sm:pt-40`}>
-        <div className="pointer-events-none absolute right-4 top-32 hidden h-72 w-72 opacity-30 sm:right-12 sm:block" aria-hidden>
+      <section
+        className={`relative overflow-hidden bg-gradient-to-br ${o.tint} px-5 pb-20 pt-32 sm:px-8 sm:pt-40`}
+      >
+        <div
+          className="pointer-events-none absolute right-4 top-32 hidden h-72 w-72 opacity-30 sm:right-12 sm:block"
+          aria-hidden
+        >
           <CategoryIcon slug={o.slug} className="h-full w-full" alt="" />
         </div>
         <div className="relative mx-auto max-w-[1100px]">
@@ -109,9 +124,7 @@ function OccasionPage() {
             {o.title.includes(" ") ? (
               <>
                 {o.title.split(" ")[0]}{" "}
-                <span className="italic text-bloom">
-                  {o.title.split(" ").slice(1).join(" ")}.
-                </span>
+                <span className="italic text-bloom">{o.title.split(" ").slice(1).join(" ")}.</span>
               </>
             ) : (
               <span className="italic text-bloom">{o.title}.</span>
@@ -138,7 +151,19 @@ function OccasionPage() {
         </div>
       </section>
 
-      <Suspense fallback={<div className="min-h-[40vh]" />}>
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-2 gap-x-5 gap-y-14 px-6 sm:px-8 lg:grid-cols-4 mt-10 mx-auto max-w-[1500px]">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="animate-pulse space-y-4">
+                <div className="aspect-[4/5] rounded-3xl bg-secondary" />
+                <div className="h-4 w-2/3 rounded bg-secondary" />
+                <div className="h-4 w-1/3 rounded bg-secondary" />
+              </div>
+            ))}
+          </div>
+        }
+      >
         <Picks query={o.query} title={o.title} />
       </Suspense>
 
@@ -155,9 +180,7 @@ function OccasionPage() {
       <section className="bg-cream/60 px-5 py-20 sm:px-8 sm:py-24">
         <div className="mx-auto flex max-w-[1100px] flex-col items-center gap-6 rounded-[2rem] bg-background p-10 text-center shadow-md sm:p-14">
           <span className="font-script text-2xl text-bloom">need a little help?</span>
-          <h3 className="font-display text-3xl italic sm:text-5xl">
-            Try the gift finder.
-          </h3>
+          <h3 className="font-display text-3xl italic sm:text-5xl">Try the gift finder.</h3>
           <p className="max-w-md text-base text-muted-foreground">
             Three little questions and we'll point you at the right piece.
           </p>
@@ -207,9 +230,7 @@ function Picks({ query, title }: { query?: string; title: string }) {
             Picks for <span className="text-bloom">{title}.</span>
           </h2>
           {isFallback && (
-            <p className="font-script text-lg text-bloom">
-              from the whole shop — start here
-            </p>
+            <p className="font-script text-lg text-bloom">from the whole shop — start here</p>
           )}
         </div>
         {products.length === 0 ? (

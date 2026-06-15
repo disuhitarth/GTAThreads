@@ -16,7 +16,8 @@ const productQueryOptions = (handle: string) => ({
   staleTime: 1000 * 60 * 5,
 });
 
-const SITE = "https://gta-threads-showcase.lovable.app";
+import { SITE_URL } from "@/lib/env";
+const SITE = SITE_URL;
 
 export const Route = createFileRoute("/product/$handle")({
   loader: async ({ context, params }) => {
@@ -94,6 +95,20 @@ export const Route = createFileRoute("/product/$handle")({
     };
   },
   component: ProductPage,
+  errorComponent: ({ error, reset }) => (
+    <div className="grid min-h-[60vh] place-items-center px-5 text-center">
+      <div>
+        <h1 className="font-display text-3xl italic">A loose thread.</h1>
+        <p className="mt-2 text-sm text-muted-foreground">{error.message}</p>
+        <button
+          onClick={reset}
+          className="mt-6 rounded-full bg-foreground px-6 py-2 text-xs uppercase tracking-[0.22em] text-background hover:bg-bloom"
+        >
+          Retry
+        </button>
+      </div>
+    </div>
+  ),
   notFoundComponent: () => (
     <div className="grid min-h-[60vh] place-items-center px-5 text-center">
       <div>
@@ -109,9 +124,25 @@ export const Route = createFileRoute("/product/$handle")({
   ),
 });
 
+function ProductPageSkeleton() {
+  return (
+    <div className="mx-auto grid max-w-[1500px] gap-10 px-6 pb-24 pt-32 sm:px-8 sm:pt-40 lg:grid-cols-2">
+      <div className="aspect-[4/5] animate-pulse rounded-3xl bg-secondary" />
+      <div className="animate-pulse space-y-6">
+        <div className="h-8 w-3/4 rounded bg-secondary" />
+        <div className="h-6 w-1/4 rounded bg-secondary" />
+        <div className="h-4 w-full rounded bg-secondary" />
+        <div className="h-4 w-5/6 rounded bg-secondary" />
+        <div className="h-12 w-full rounded-full bg-secondary" />
+        <div className="h-12 w-1/3 rounded-full bg-secondary" />
+      </div>
+    </div>
+  );
+}
+
 function ProductPage() {
   return (
-    <Suspense fallback={<div className="min-h-[60vh]" />}>
+    <Suspense fallback={<ProductPageSkeleton />}>
       <ProductInner />
     </Suspense>
   );

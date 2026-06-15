@@ -50,11 +50,35 @@ function Index() {
       <Marquee />
       <TrustStrip />
       <Occasions />
-      <Suspense fallback={<div className="min-h-[40vh]" />}>
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-2 gap-x-5 gap-y-14 px-6 sm:px-8 lg:grid-cols-4 mx-auto max-w-[1500px] mt-10">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="animate-pulse space-y-4">
+                <div className="aspect-[4/5] rounded-3xl bg-secondary" />
+                <div className="h-4 w-2/3 rounded bg-secondary" />
+                <div className="h-4 w-1/3 rounded bg-secondary" />
+              </div>
+            ))}
+          </div>
+        }
+      >
         <FeaturedProducts />
       </Suspense>
       <GiftFinder />
-      <Suspense fallback={<div className="min-h-[40vh]" />}>
+      <Suspense
+        fallback={
+          <div className="grid grid-cols-2 gap-x-5 gap-y-14 px-6 sm:px-8 lg:grid-cols-4 mx-auto max-w-[1500px] mt-10">
+            {Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="animate-pulse space-y-4">
+                <div className="aspect-[4/5] rounded-3xl bg-secondary" />
+                <div className="h-4 w-2/3 rounded bg-secondary" />
+                <div className="h-4 w-1/3 rounded bg-secondary" />
+              </div>
+            ))}
+          </div>
+        }
+      >
         <BestsellersCarousel />
       </Suspense>
       <GiftWrapStrip />

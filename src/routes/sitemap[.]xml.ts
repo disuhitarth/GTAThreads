@@ -26,6 +26,8 @@ const STATIC: Entry[] = [
   { path: "/size-guide", changefreq: "yearly", priority: "0.4" },
   { path: "/care", changefreq: "yearly", priority: "0.4" },
   { path: "/shipping-returns", changefreq: "yearly", priority: "0.4" },
+  { path: "/privacy", changefreq: "yearly", priority: "0.3" },
+  { path: "/terms", changefreq: "yearly", priority: "0.3" },
 ];
 
 export const Route = createFileRoute("/sitemap.xml")({

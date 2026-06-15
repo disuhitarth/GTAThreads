@@ -1,10 +1,26 @@
 import { Truck, ShieldCheck, Gift, Sparkles } from "lucide-react";
 
 const ITEMS = [
-  { icon: Truck, title: "Free GTA delivery", body: "On orders over $75 anywhere in the Greater Toronto Area." },
-  { icon: Gift, title: "Free gift wrap", body: "Tissue, ribbon, kraft box and a handwritten note — on every order." },
-  { icon: ShieldCheck, title: "30-day promise", body: "Not in love with your piece? Send it back, no awkward questions." },
-  { icon: Sparkles, title: "Stitched, not printed", body: "Real embroidery thread, made to soften with every wash." },
+  {
+    icon: Truck,
+    title: "Free GTA delivery",
+    body: "On orders over $75 anywhere in the Greater Toronto Area.",
+  },
+  {
+    icon: Gift,
+    title: "Free gift wrap",
+    body: "Tissue, ribbon, kraft box and a handwritten note — on every order.",
+  },
+  {
+    icon: ShieldCheck,
+    title: "30-day promise",
+    body: "Not in love with your piece? Send it back, no awkward questions.",
+  },
+  {
+    icon: Sparkles,
+    title: "Stitched, not printed",
+    body: "Real embroidery thread, made to soften with every wash.",
+  },
 ];
 
 export function TrustStrip() {

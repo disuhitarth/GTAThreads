@@ -37,10 +37,7 @@ export function BestsellersCarousel() {
   if (!products.length) return null;
 
   return (
-    <section
-      ref={root}
-      className="bg-cream/60 px-6 py-20 sm:px-8 sm:py-24 lg:py-32"
-    >
+    <section ref={root} className="bg-cream/60 px-6 py-20 sm:px-8 sm:py-24 lg:py-32">
       <div className="mx-auto max-w-[1600px]">
         <div className="bs-fade flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
           <div>

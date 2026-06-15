@@ -9,10 +9,12 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TermsRouteImport } from './routes/terms'
 import { Route as SizeGuideRouteImport } from './routes/size-guide'
 import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as ShopRouteImport } from './routes/shop'
 import { Route as ShippingReturnsRouteImport } from './routes/shipping-returns'
+import { Route as PrivacyRouteImport } from './routes/privacy'
 import { Route as OccasionsRouteImport } from './routes/occasions'
 import { Route as LookbookRouteImport } from './routes/lookbook'
 import { Route as JournalRouteImport } from './routes/journal'
@@ -32,6 +34,11 @@ import { Route as CollectionsHandleRouteImport } from './routes/collections.$han
 import { Route as CategorySlugRouteImport } from './routes/category.$slug'
 import { Route as ApiChatRouteImport } from './routes/api/chat'
 
+const TermsRoute = TermsRouteImport.update({
+  id: '/terms',
+  path: '/terms',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SizeGuideRoute = SizeGuideRouteImport.update({
   id: '/size-guide',
   path: '/size-guide',
@@ -50,6 +57,11 @@ const ShopRoute = ShopRouteImport.update({
 const ShippingReturnsRoute = ShippingReturnsRouteImport.update({
   id: '/shipping-returns',
   path: '/shipping-returns',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyRoute = PrivacyRouteImport.update({
+  id: '/privacy',
+  path: '/privacy',
   getParentRoute: () => rootRouteImport,
 } as any)
 const OccasionsRoute = OccasionsRouteImport.update({
@@ -153,10 +165,12 @@ export interface FileRoutesByFullPath {
   '/journal': typeof JournalRouteWithChildren
   '/lookbook': typeof LookbookRoute
   '/occasions': typeof OccasionsRouteWithChildren
+  '/privacy': typeof PrivacyRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/size-guide': typeof SizeGuideRoute
+  '/terms': typeof TermsRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/collections/$handle': typeof CollectionsHandleRoute
@@ -174,10 +188,12 @@ export interface FileRoutesByTo {
   '/custom-orders': typeof CustomOrdersRoute
   '/gift-finder': typeof GiftFinderRoute
   '/lookbook': typeof LookbookRoute
+  '/privacy': typeof PrivacyRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/size-guide': typeof SizeGuideRoute
+  '/terms': typeof TermsRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/collections/$handle': typeof CollectionsHandleRoute
@@ -199,10 +215,12 @@ export interface FileRoutesById {
   '/journal': typeof JournalRouteWithChildren
   '/lookbook': typeof LookbookRoute
   '/occasions': typeof OccasionsRouteWithChildren
+  '/privacy': typeof PrivacyRoute
   '/shipping-returns': typeof ShippingReturnsRoute
   '/shop': typeof ShopRoute
   '/sitemap.xml': typeof SitemapDotxmlRoute
   '/size-guide': typeof SizeGuideRoute
+  '/terms': typeof TermsRoute
   '/api/chat': typeof ApiChatRoute
   '/category/$slug': typeof CategorySlugRoute
   '/collections/$handle': typeof CollectionsHandleRoute
@@ -225,10 +243,12 @@ export interface FileRouteTypes {
     | '/journal'
     | '/lookbook'
     | '/occasions'
+    | '/privacy'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
     | '/size-guide'
+    | '/terms'
     | '/api/chat'
     | '/category/$slug'
     | '/collections/$handle'
@@ -246,10 +266,12 @@ export interface FileRouteTypes {
     | '/custom-orders'
     | '/gift-finder'
     | '/lookbook'
+    | '/privacy'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
     | '/size-guide'
+    | '/terms'
     | '/api/chat'
     | '/category/$slug'
     | '/collections/$handle'
@@ -270,10 +292,12 @@ export interface FileRouteTypes {
     | '/journal'
     | '/lookbook'
     | '/occasions'
+    | '/privacy'
     | '/shipping-returns'
     | '/shop'
     | '/sitemap.xml'
     | '/size-guide'
+    | '/terms'
     | '/api/chat'
     | '/category/$slug'
     | '/collections/$handle'
@@ -295,10 +319,12 @@ export interface RootRouteChildren {
   JournalRoute: typeof JournalRouteWithChildren
   LookbookRoute: typeof LookbookRoute
   OccasionsRoute: typeof OccasionsRouteWithChildren
+  PrivacyRoute: typeof PrivacyRoute
   ShippingReturnsRoute: typeof ShippingReturnsRoute
   ShopRoute: typeof ShopRoute
   SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   SizeGuideRoute: typeof SizeGuideRoute
+  TermsRoute: typeof TermsRoute
   ApiChatRoute: typeof ApiChatRoute
   CollectionsHandleRoute: typeof CollectionsHandleRoute
   ProductHandleRoute: typeof ProductHandleRoute
@@ -306,6 +332,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/terms': {
+      id: '/terms'
+      path: '/terms'
+      fullPath: '/terms'
+      preLoaderRoute: typeof TermsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/size-guide': {
       id: '/size-guide'
       path: '/size-guide'
@@ -332,6 +365,13 @@ declare module '@tanstack/react-router' {
       path: '/shipping-returns'
       fullPath: '/shipping-returns'
       preLoaderRoute: typeof ShippingReturnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy': {
+      id: '/privacy'
+      path: '/privacy'
+      fullPath: '/privacy'
+      preLoaderRoute: typeof PrivacyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/occasions': {
@@ -514,10 +554,12 @@ const rootRouteChildren: RootRouteChildren = {
   JournalRoute: JournalRouteWithChildren,
   LookbookRoute: LookbookRoute,
   OccasionsRoute: OccasionsRouteWithChildren,
+  PrivacyRoute: PrivacyRoute,
   ShippingReturnsRoute: ShippingReturnsRoute,
   ShopRoute: ShopRoute,
   SitemapDotxmlRoute: SitemapDotxmlRoute,
   SizeGuideRoute: SizeGuideRoute,
+  TermsRoute: TermsRoute,
   ApiChatRoute: ApiChatRoute,
   CollectionsHandleRoute: CollectionsHandleRoute,
   ProductHandleRoute: ProductHandleRoute,
