@@ -1,7 +1,7 @@
 import { useState, Suspense } from "react";
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { ArrowLeft, Heart, Loader2 } from "lucide-react";
+import { ArrowLeft, Heart, Loader2, Share2, X } from "lucide-react";
 import { fetchProductByHandle, formatPrice } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
@@ -188,6 +188,16 @@ function ProductInner() {
   };
 
   const images = product.images.edges;
+  const [zoomImage, setZoomImage] = useState<number | null>(null);
+
+  const onShare = async () => {
+    const url = `${SITE_URL}/product/${product.handle}`;
+    if (navigator.share) {
+      await navigator.share({ title: product.title, url }).catch(() => {});
+    } else {
+      await navigator.clipboard.writeText(url);
+    }
+  };
 
   return (
     <section className="bg-background px-5 pb-24 pt-28 sm:px-8 sm:pt-32">
@@ -204,11 +214,17 @@ function ProductInner() {
           <div>
             <div className="relative aspect-[4/5] overflow-hidden bg-secondary/40">
               {images[activeImage]?.node && (
-                <img
-                  src={images[activeImage].node.url}
-                  alt={images[activeImage].node.altText ?? product.title}
-                  className="h-full w-full object-cover"
-                />
+                <button
+                  onClick={() => setZoomImage(activeImage)}
+                  aria-label="View full size image"
+                  className="h-full w-full cursor-zoom-in"
+                >
+                  <img
+                    src={images[activeImage].node.url}
+                    alt={images[activeImage].node.altText ?? product.title}
+                    className="h-full w-full object-cover"
+                  />
+                </button>
               )}
             </div>
             {images.length > 1 && (
@@ -320,6 +336,13 @@ function ProductInner() {
                   )}
                 />
               </button>
+              <button
+                onClick={onShare}
+                aria-label="Share product"
+                className="grid h-14 w-14 shrink-0 place-items-center border border-border transition-colors hover:border-bloom hover:text-bloom"
+              >
+                <Share2 className="h-5 w-5" />
+              </button>
             </div>
 
             <ul className="mt-8 space-y-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
@@ -330,6 +353,27 @@ function ProductInner() {
           </div>
         </div>
       </div>
+
+      {zoomImage !== null && images[zoomImage]?.node && (
+        <div
+          className="fixed inset-0 z-[70] grid place-items-center bg-background/95 backdrop-blur-sm"
+          onClick={() => setZoomImage(null)}
+        >
+          <button
+            onClick={() => setZoomImage(null)}
+            aria-label="Close zoom"
+            className="absolute right-4 top-4 grid h-11 w-11 place-items-center rounded-full bg-foreground/10 text-foreground hover:bg-foreground/20"
+          >
+            <X className="h-6 w-6" />
+          </button>
+          <img
+            src={images[zoomImage].node.url}
+            alt={images[zoomImage].node.altText ?? product.title}
+            className="max-h-[90vh] max-w-[90vw] object-contain"
+            onClick={(e) => e.stopPropagation()}
+          />
+        </div>
+      )}
     </section>
   );
 }
