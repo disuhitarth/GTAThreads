@@ -1,3 +1,4 @@
+import { lazy, useEffect, type ReactNode, Suspense } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
@@ -6,21 +7,21 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SITE_URL } from "@/lib/env";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
-import { CartDrawer } from "@/components/CartDrawer";
-import { Grain } from "@/components/Grain";
-import { FlowerCursor } from "@/components/FlowerCursor";
-import { CareChat } from "@/components/CareChat";
-import { CookieConsent } from "@/components/CookieConsent";
 import { Toaster } from "@/components/ui/sonner";
 import { useCartSync } from "@/hooks/useCartSync";
 import { fetchCollections } from "@/lib/shopify";
+
+const CartDrawer = lazy(() => import("@/components/CartDrawer").then((m) => ({ default: m.CartDrawer })));
+const CareChat = lazy(() => import("@/components/CareChat").then((m) => ({ default: m.CareChat })));
+const CookieConsent = lazy(() => import("@/components/CookieConsent").then((m) => ({ default: m.CookieConsent })));
+const Grain = lazy(() => import("@/components/Grain").then((m) => ({ default: m.Grain })));
+const FlowerCursor = lazy(() => import("@/components/FlowerCursor").then((m) => ({ default: m.FlowerCursor })));
 
 function NotFoundComponent() {
   return (
@@ -187,16 +188,16 @@ function AppShell() {
   useCartSync();
   return (
     <div className="relative min-h-screen bg-background">
-      <Grain />
-      <FlowerCursor />
+      <Suspense fallback={null}><Grain /></Suspense>
+      <Suspense fallback={null}><FlowerCursor /></Suspense>
       <Header />
       <main className="animate-fade-in">
         <Outlet />
       </main>
       <Footer />
-      <CartDrawer />
-      <CareChat />
-      <CookieConsent />
+      <Suspense fallback={null}><CartDrawer /></Suspense>
+      <Suspense fallback={null}><CareChat /></Suspense>
+      <Suspense fallback={null}><CookieConsent /></Suspense>
       <Toaster position="top-center" />
     </div>
   );

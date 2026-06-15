@@ -13,6 +13,8 @@ export const SHOPIFY_STOREFRONT_TOKEN = ENV_SHOPIFY_STOREFRONT_TOKEN;
 export interface ShopifyImage {
   url: string;
   altText: string | null;
+  width?: number;
+  height?: number;
 }
 
 export interface ShopifyVariant {
@@ -95,7 +97,7 @@ const PRODUCT_FIELDS = `
   description
   handle
   priceRange { minVariantPrice { amount currencyCode } }
-  images(first: 5) { edges { node { url altText } } }
+  images(first: 5) { edges { node { url altText width height } } }
   variants(first: 25) {
     edges { node {
       id title availableForSale
@@ -127,7 +129,7 @@ const COLLECTION_BY_HANDLE_QUERY = `
       id
       title
       description
-      image { url altText }
+      image { url altText width height }
       products(first: 48) {
         edges { node { ${PRODUCT_FIELDS} } }
       }
@@ -144,7 +146,7 @@ const COLLECTIONS_QUERY = `
           title
           handle
           description
-          image { url altText }
+          image { url altText width height }
         }
       }
     }
