@@ -4,19 +4,27 @@ Read this before making any changes. This file is the source of truth for projec
 
 ## Project Status
 
-**Phase 1 (Launch Readiness) — In progress.** ✅ Shopify (Storefront + Admin), ✅ Groq, ✅ OG image assets created.
+**Phase 1 (Launch Readiness) — Done.** ✅ Shopify (Storefront + Admin), ✅ Groq, ✅ OG image assets.
+**Phases 3 (Fluid UX) — Done.** Search, wishlist, accounts, password reset, GiftFinder, mobile fixes.
+**Phase 4 (Scale/Polish) — Done.** Performance, a11y, testing, multi-currency, extra polish.
+
 Remaining (needs human with API keys):
 - NEEDS HUMAN: Sentry DSN for error monitoring (see SETUP.md)
-- NEEDS HUMAN (future): Google Business Profile → Place ID for Google reviews
-- Code changes complete: legal pages, cookie consent, CSP headers, Groq gateway, Shopify Admin newsletter, mailto: custom orders, Sentry wiring, type cleanup, skeletons, error boundaries, OG/favicon assets
+- NEEDS HUMAN: Shopify Admin API token for admin dashboard and newsletter
+- NEEDS HUMAN: Google Places API key + Place ID for reviews
+- NEEDS HUMAN: Judge.me API credentials for product reviews
+- NEEDS HUMAN (future): Tracking API key (AfterShip/Shippo/EasyPost)
 
 ## Stack
 - **TanStack Start v1** (React 19, Vite 7) — SSR + file-based routing.
 - **Tailwind CSS v4** via `src/styles.css` (no `tailwind.config.js`).
-- **bun** as package manager. Use `bun add` / `bun remove`, not npm/yarn.
-- **Zustand** for cart state (`src/stores/cartStore.ts`), **TanStack Query** for data fetching.
-- **Shopify Storefront API** (headless) is the only source of truth for products, cart, and checkout.
-- **AI SDK** (`ai` + `@ai-sdk/openai-compatible`) for the Care chatbot via Groq (free, Llama 3.3 70B).
+- **bun** as package manager (or npm/pnpm — all work). Use `bun install` / `bun run dev`.
+- **Zustand** for cart, wishlist, auth, currency, recently viewed — all persisted to localStorage with SSR-safe guards.
+- **TanStack Query** for all Shopify data fetching.
+- **Shopify Storefront API** (headless) — only source of truth for products, cart, checkout.
+- **AI SDK** (`ai` + `@ai-sdk/openai-compatible`) for Care chatbot via Groq (free, Llama 3.3 70B).
+- **Sentry** wired (DSN needed from human).
+- **Playwright** (5 E2E smoke tests), **Vitest + RTL** (6 unit tests).
 
 ## Hard rules
 1. **Routing is file-based** under `src/routes/`. Never edit `src/routeTree.gen.ts` — it's auto-generated. Flat dot-separated naming: `journal.$slug.tsx` → `/journal/:slug`.
@@ -29,48 +37,81 @@ Remaining (needs human with API keys):
 5. **All env vars go through `src/lib/env.ts`** — do not hardcode. Add new vars to both `src/lib/env.ts` and `.env.example`.
 6. **SEO conventions are already established.** Every route's `head()` sets a unique `title`, `description`, canonical, OG + Twitter tags. Dynamic routes pull from loader data. Keep this pattern when adding routes. `og:image` belongs on leaf routes only.
 7. **Design tokens only.** Use semantic Tailwind classes (`bg-background`, `text-bloom`, `font-display`). Don't introduce raw `text-white` / hex colors. Tokens are defined in `src/styles.css`.
+8. **Always add explicit `component:` property** to route definitions. Don't rely on default export auto-detection.
+9. **Zustand persist stores must use SSR-safe storage**: `createJSONStorage(() => typeof window !== "undefined" ? localStorage : undefined!)`. Already done in all 5 stores.
 
 ## File map
 
 | Path | Purpose |
 |---|---|
-| `src/routes/__root.tsx` | Root layout, global meta, JSON-LD, includes CookieConsent |
-| `src/routes/privacy.tsx` | Privacy Policy page |
-| `src/routes/terms.tsx` | Terms of Service page |
-| `src/routes/product.$handle.tsx` | Product detail + Product JSON-LD + BreadcrumbList |
-| `src/routes/sitemap[.]xml.ts` | Dynamic sitemap (includes /privacy and /terms) |
-| `src/routes/custom-orders.tsx` | 8-step wizard — submits via mailto: directly (zero setup) |
-| `src/routes/api/chat.ts` | Care chatbot streaming via Groq (llama-3.3-70b-versatile) |
-| `src/lib/shopify.ts` | All Storefront API queries + cart mutations (no more `any` types) |
+| `src/routes/__root.tsx` | Root layout, global meta, JSON-LD, CookieConsent |
+| `src/routes/index.tsx` | Homepage (hero, featured, GiftFinder, journal, marquee, brand-story, lookbook, reviews, etc.) |
+| `src/routes/shop.tsx` | Full catalog with sort/filter (collection, size, price, sort) |
+| `src/routes/product.$handle.tsx` | PDP + JSON-LD + image zoom + share + recently viewed + related products |
+| `src/routes/collections.$handle.tsx` | Collection listing |
+| `src/routes/occasions/$slug.tsx` | Occasion landing pages |
+| `src/routes/wishlist.tsx` | Saved items |
+| `src/routes/account.tsx` | Customer dashboard with order history |
+| `src/routes/login.tsx` | Customer login |
+| `src/routes/register.tsx` | Customer registration |
+| `src/routes/reset-password.tsx` | Password reset |
+| `src/routes/custom-orders.tsx` | 8-step wizard (mailto: submission) |
+| `src/routes/care.tsx` | Care instructions |
+| `src/routes/shipping-returns.tsx` | Shipping & returns |
+| `src/routes/size-guide.tsx` | Sizing tables |
+| `src/routes/lookbook.tsx` | Editorial lookbook |
+| `src/routes/gift-finder.tsx` | Standalone /gift-finder |
+| `src/routes/about.tsx` | Brand story |
+| `src/routes/privacy.tsx` | Privacy Policy |
+| `src/routes/terms.tsx` | Terms of Service |
+| `src/routes/journal.index.tsx` | Blog listing |
+| `src/routes/journal.$slug.tsx` | Blog post |
+| `src/routes/category.index.tsx` | Category listing |
+| `src/routes/category.$slug.tsx` | Category detail |
+| `src/routes/occasions.index.tsx` | Occasion listing |
+| `src/routes/sitemap[.]xml.ts` | Dynamic sitemap |
+| `src/routes/api/chat.ts` | Chatbot streaming via Groq |
+| `src/routes/admin.tsx` | Admin layout shell (Phase 2) |
+| `src/routes/admin.index.tsx` | Admin dashboard (Phase 2) |
+| `src/routes/admin.products.tsx` | Admin product listing (Phase 2) |
+| `src/routes/admin.orders.tsx` | Admin order listing (Phase 2) |
+| `src/lib/shopify.ts` | All Storefront API queries + cart mutations + customer auth |
 | `src/lib/env.ts` | Centralized env var access |
-| `src/lib/ai-gateway.server.ts` | Groq OpenAI-compatible provider |
-| `src/lib/orders.functions.ts` | (Unused — mailto: used directly from form; file kept as upgrade reference) |
-| `src/lib/newsletter.functions.ts` | Shopify Admin API — creates customer with email + accepts_marketing |
+| `src/lib/admin-api.functions.ts` | Admin server functions (Phase 2) |
+| `src/lib/newsletter.functions.ts` | Shopify Admin API newsletter subscription |
 | `src/lib/reviews.functions.ts` | Google Places API review fetching |
 | `src/lib/tracking.functions.ts` | **STUB** — shipment tracking lookup |
-| `src/lib/lovable-error-reporting.ts` | Sentry error reporting (or console fallback) |
+| `src/lib/lovable-error-reporting.ts` | Sentry error reporting (console fallback without DSN) |
+| `src/lib/useHydrated.ts` | SSR-safe hydration guard hook |
 | `src/stores/cartStore.ts` | Zustand cart, persisted, synced with Shopify |
+| `src/stores/wishlistStore.ts` | Zustand wishlist, persisted |
+| `src/stores/authStore.ts` | Zustand auth, persisted (accessToken only) |
+| `src/stores/currencyStore.ts` | CAD/USD currency switcher |
+| `src/stores/recentlyViewedStore.ts` | Recently viewed products |
+| `src/components/ProductCard.tsx` | Product card with quick-add, wishlist, badges, image hover |
+| `src/components/PriceDisplay.tsx` | Multi-currency price rendering |
+| `src/components/Header.tsx` | Site header with search, nav, cart icon |
+| `src/components/CartDrawer.tsx` | Slide-out cart with line items, quantity controls, checkout |
 | `src/components/CookieConsent.tsx` | GDPR/CCPA cookie consent banner |
-| `SETUP.md` | Step-by-step human setup guide (API keys, accounts, domain) |
+| `src/components/CareChat.tsx` | Groq-powered chatbot |
 
 ## Environment variables
 See `.env.example` and `SETUP.md`. Missing vars fall back to dev defaults gracefully.
 
-## Open follow-ups (Phase 2+)
-- **Phase 2 — Admin Control**: Shopify custom app → Admin API token → product CRUD, order management, admin panel
-- **Phase 3 — Fluid UX**: Search bar, order confirmation page, customer accounts (Shopify PKCE), wishlist, page transitions, mobile audit, abandoned cart recovery
-- **Phase 4 — Scale**: Performance optimization, testing, multi-currency, accessibility audit
+## Open follow-ups
+- **Phase 2 — Admin Control**: Wire up `SHOPIFY_ADMIN_TOKEN` env var → product CRUD, order management via Admin REST API
 - **Real tracking API**: implement `lookupTracking` and surface as a tool for the chatbot
-- **OG image**: SVGs created at `src/assets/og-default.svg`. Must be converted to PNG at `public/og-default.png` for production (see SETUP.md).
-- **Favicon set**: SVG favicon created at `public/favicon.svg` and `public/apple-touch-icon.svg`. Add `public/favicon.ico` and `public/apple-touch-icon.png` for older browsers if needed.
-- **Reviews**: Judge.me free plan installed + Google Places API key for Google reviews
-- **Custom orders email upgrade**: replace mailto: with structured email via Resend or Shopify Admin API
+- **OG/PNG conversion**: `public/og-default.png` is now a proper 1200×630 PNG (converted from SVG)
+- **Reviews**: Google Places reviews are wired but need API key; Judge.me needs credentials
+- **Custom orders email**: replace mailto: with structured email via Resend or Shopify Admin API
+- **Abandoned cart recovery**: Shopify automation or custom email flow
 
 ## Things NOT to do
 - Don't convert to a Shopify Liquid theme.
 - Don't add `react-router-dom` — TanStack Router only.
 - Don't create `src/pages/` (Next.js convention).
 - Don't add `public/_redirects` — TanStack Start handles routing on every host.
+- Don't edit `src/routeTree.gen.ts` — it's auto-generated.
 
 ## Local commands
 ```bash
