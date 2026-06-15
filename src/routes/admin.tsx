@@ -167,7 +167,7 @@ function AdminLayout() {
               setAuthed(false);
               router.invalidate();
             }}
-            className="text-xs text-muted-foreground"
+            className="rounded-xl px-4 py-2 text-sm text-muted-foreground hover:text-red-500"
           >
             Log out
           </button>

@@ -82,7 +82,7 @@ export function ProductCard({ product, className, priority }: ProductCardProps) 
         <button
           onClick={onFav}
           aria-label="Favourite"
-          className="absolute left-3 top-3 grid h-9 w-9 place-items-center rounded-full bg-background/85 text-foreground backdrop-blur transition-colors hover:text-bloom"
+          className="absolute left-3 top-3 grid h-11 w-11 place-items-center rounded-full bg-background/85 text-foreground backdrop-blur transition-colors hover:text-bloom"
         >
           <Heart
             className={cn("h-4 w-4 transition-all", favorited && "fill-bloom text-bloom scale-110")}
@@ -93,7 +93,7 @@ export function ProductCard({ product, className, priority }: ProductCardProps) 
           <button
             onClick={onQuickAdd}
             aria-label={`Add ${node.title} to bag`}
-            className="absolute inset-x-3 bottom-3 inline-flex h-10 translate-y-2 items-center justify-center gap-2 rounded-full bg-foreground text-xs uppercase tracking-[0.18em] text-background opacity-0 transition-all duration-300 hover:bg-bloom group-hover:translate-y-0 group-hover:opacity-100"
+            className="absolute inset-x-3 bottom-3 inline-flex h-10 translate-y-0 items-center justify-center gap-2 rounded-full bg-foreground text-xs uppercase tracking-[0.18em] text-background opacity-100 transition-all duration-300 hover:bg-bloom md:translate-y-2 md:opacity-0 md:group-hover:translate-y-0 md:group-hover:opacity-100"
             disabled={isLoading}
           >
             {isLoading ? (

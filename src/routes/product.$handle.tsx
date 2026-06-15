@@ -197,7 +197,7 @@ function ProductInner() {
               )}
             </div>
             {images.length > 1 && (
-              <div className="mt-3 grid grid-cols-5 gap-2">
+              <div className="mt-3 grid grid-cols-4 gap-2 sm:grid-cols-5">
                 {images.map((img, i) => (
                   <button
                     key={i}

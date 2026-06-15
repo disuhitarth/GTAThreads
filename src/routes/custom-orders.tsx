@@ -339,7 +339,7 @@ function CustomOrders() {
             <button
               onClick={() => setStep((s) => Math.max(0, s - 1))}
               disabled={step === 0}
-              className="inline-flex items-center gap-2 text-xs uppercase tracking-[0.22em] text-muted-foreground enabled:hover:text-bloom disabled:opacity-30"
+              className="inline-flex items-center gap-2 rounded-xl px-4 py-3 text-xs uppercase tracking-[0.22em] text-muted-foreground enabled:hover:text-bloom disabled:opacity-30"
             >
               <ArrowLeft className="h-4 w-4" /> Back
             </button>
