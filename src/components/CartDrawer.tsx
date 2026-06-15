@@ -9,7 +9,8 @@ import {
 } from "@/components/ui/sheet";
 import { ExternalLink, Loader2, Minus, Plus, ShoppingBag, Trash2 } from "lucide-react";
 import { useCartStore } from "@/stores/cartStore";
-import { formatPrice } from "@/lib/shopify";
+import { useCurrencyStore, convertPrice, type CurrencyCode } from "@/stores/currencyStore";
+import { PriceDisplay } from "@/components/PriceDisplay";
 
 export function CartDrawer() {
   const {
@@ -27,6 +28,7 @@ export function CartDrawer() {
   const totalItems = items.reduce((s, i) => s + i.quantity, 0);
   const totalPrice = items.reduce((s, i) => s + parseFloat(i.price.amount) * i.quantity, 0);
   const currency = items[0]?.price.currencyCode ?? "CAD";
+  const preferredCurrency = useCurrencyStore((s) => s.currency);
 
   useEffect(() => {
     if (isOpen) syncCart();
@@ -103,7 +105,7 @@ export function CartDrawer() {
                             </button>
                           </div>
                           <p className="text-sm font-medium">
-                            {formatPrice(item.price.amount, item.price.currencyCode)}
+                            <PriceDisplay amount={item.price.amount} currency={item.price.currencyCode} />
                           </p>
                         </div>
                       </div>
@@ -123,7 +125,9 @@ export function CartDrawer() {
                   <span className="text-xs uppercase tracking-[0.2em] text-muted-foreground">
                     Subtotal
                   </span>
-                  <span className="font-display text-2xl">{formatPrice(totalPrice, currency)}</span>
+                  <span className="font-display text-2xl">
+                    <PriceDisplay amount={totalPrice.toFixed(2)} currency={currency} />
+                  </span>
                 </div>
                 <p className="text-xs text-muted-foreground">
                   Taxes & shipping calculated at checkout.

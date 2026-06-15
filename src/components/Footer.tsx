@@ -1,6 +1,7 @@
 import { Link } from "@tanstack/react-router";
 import { Logo } from "@/components/brand/Logo";
 import { WaveDivider } from "@/components/WaveDivider";
+import { CurrencySwitcher } from "@/components/CurrencySwitcher";
 import { OCCASIONS } from "@/lib/occasions";
 
 export function Footer() {
@@ -87,6 +88,7 @@ export function Footer() {
         <div className="mt-12 flex flex-col items-start justify-between gap-3 border-t border-border/60 pt-6 text-xs text-muted-foreground sm:flex-row sm:items-center">
           <span>© {new Date().getFullYear()} GTA Threads · Stitched with love in Toronto.</span>
           <div className="flex items-center gap-4">
+            <CurrencySwitcher />
             <Link to="/privacy" className="hover:text-bloom">
               Privacy
             </Link>

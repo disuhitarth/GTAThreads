@@ -5,6 +5,7 @@ import { ArrowLeft, Heart, Loader2 } from "lucide-react";
 import { fetchProductByHandle, formatPrice } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
+import { PriceDisplay } from "@/components/PriceDisplay";
 import { cn } from "@/lib/utils";
 
 const productQueryOptions = (handle: string) => ({
@@ -237,10 +238,7 @@ function ProductInner() {
               {product.title}
             </h1>
             <p className="mt-4 font-display text-2xl">
-              {formatPrice(
-                product.priceRange.minVariantPrice.amount,
-                product.priceRange.minVariantPrice.currencyCode,
-              )}
+              <PriceDisplay amount={product.priceRange.minVariantPrice.amount} currency={product.priceRange.minVariantPrice.currencyCode} />
             </p>
 
             {product.description && (

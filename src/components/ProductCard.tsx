@@ -3,6 +3,7 @@ import { Heart, Loader2, Plus } from "lucide-react";
 import { formatPrice, type ShopifyProduct } from "@/lib/shopify";
 import { useCartStore } from "@/stores/cartStore";
 import { useWishlistStore } from "@/stores/wishlistStore";
+import { PriceDisplay } from "@/components/PriceDisplay";
 import { PRODUCT_PLACEHOLDER } from "@/lib/icons";
 import { cn } from "@/lib/utils";
 
@@ -117,7 +118,7 @@ export function ProductCard({ product, className, priority }: ProductCardProps) 
       <div className="mt-3 flex items-baseline justify-between gap-3 px-1">
         <h3 className="truncate text-sm font-medium">{node.title}</h3>
         <span className="shrink-0 font-display text-lg text-bloom">
-          {formatPrice(price.amount, price.currencyCode)}
+          <PriceDisplay amount={price.amount} currency={price.currencyCode} />
         </span>
       </div>
     </Link>

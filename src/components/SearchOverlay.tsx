@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useRouter } from "@tanstack/react-router";
 import { Search, X, Loader2 } from "lucide-react";
-import { fetchProducts, formatPrice } from "@/lib/shopify";
+import { fetchProducts } from "@/lib/shopify";
+import { PriceDisplay } from "@/components/PriceDisplay";
 import { useQuery } from "@tanstack/react-query";
 
 export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () => void }) {
@@ -94,7 +95,7 @@ export function SearchOverlay({ open, onClose }: { open: boolean; onClose: () =>
                 <div className="min-w-0 flex-1">
                   <p className="truncate text-sm font-medium">{p.title}</p>
                   <p className="text-xs text-muted-foreground">
-                    {formatPrice(p.priceRange.minVariantPrice)}
+                    <PriceDisplay amount={p.priceRange.minVariantPrice.amount} currency={p.priceRange.minVariantPrice.currencyCode} />
                   </p>
                 </div>
               </Link>

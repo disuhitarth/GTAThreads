@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Heart, ShoppingBag } from "lucide-react";
 import { useWishlistStore } from "@/stores/wishlistStore";
-import { formatPrice } from "@/lib/shopify";
+import { PriceDisplay } from "@/components/PriceDisplay";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/wishlist")({
@@ -76,7 +76,7 @@ export default function WishlistPage() {
                   <div className="mt-3 flex items-baseline justify-between gap-3 px-1">
                     <h3 className="truncate text-sm font-medium">{item.title}</h3>
                     <span className="shrink-0 font-display text-lg text-bloom">
-                      {formatPrice(item.price.amount, item.price.currencyCode)}
+                      <PriceDisplay amount={item.price.amount} currency={item.price.currencyCode} />
                     </span>
                   </div>
                 </Link>
